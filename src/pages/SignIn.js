@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -23,14 +23,25 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import useHttp from "../hooks/use-http";
+import { students } from "../api";
 
 const theme = createTheme();
 const SignIn = () => {
+  const { sendRequest, status, data: loadedData, error } = useHttp(
+    students,
+    true
+  )
+
+  useEffect(() => (
+    sendRequest("IT")
+    ), [sendRequest])
+    console.log(loadedData);
+
   const [user, setUser] = React.useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
-
   const {
     register,
     formState: { errors },
