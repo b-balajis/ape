@@ -37,6 +37,8 @@ const SignIn = () => {
     sendRequest("IT")
     ), [sendRequest])
     console.log(loadedData);
+    console.log(status);
+    console.log(error);
 
   const [user, setUser] = React.useState("");
   const [showPassword, setShowPassword] = useState(false);
