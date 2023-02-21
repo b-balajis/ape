@@ -30,6 +30,7 @@ const CompileButton = (props) => {
   // Submit code to server
 
   const [responseData, setResponseData] = useState(null);
+  console.log("response data", responseData);
   const [isCompiling, setIsCompiling] = useState(false);
 
   const sampleInput = question.sampleinput;
