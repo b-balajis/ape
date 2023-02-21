@@ -23,36 +23,26 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase";
 import useHttp from "../hooks/use-http";
-import { students } from "../api";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signin } from "../api";
 
 const theme = createTheme();
 const SignIn = () => {
-//   const auth = getAuth();
-// signInWithEmailAndPassword(auth, email, password)
-//   .then((userCredential) => {
-//     // Signed in 
-//     const user = userCredential.user;
-//     // ...
-//   })
-//   .catch((error) => {
-//     const errorCode = error.code;
-//     const errorMessage = error.message;
-//   });
   const { sendRequest, status, data: loadedData, error } = useHttp(
-    students,
+    signin,
     true
   )
 
-  useEffect(() => (
-    sendRequest("IT")
-    ), [sendRequest])
-    console.log(loadedData);
-    console.log(status);
-    console.log(error);
-
-  const [user, setUser] = React.useState("");
+  // useEffect(() => (
+  //   sendRequest("IT")
+  //   ), [sendRequest])
+  //   console.log(loadedData);
+  console.log(error, "error");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [usertype, setUserType] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -61,25 +51,50 @@ const SignIn = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const handleChange = (event) => {
-    setUser(event.target.value);
+    setUserType(event.target.value);
   };
 
-  const handleSignIn = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    let selectUser = data.get("selectUser");
-    console.log(selectUser);
-    if (selectUser === "s") {
-      window.location.href = "/s/";
+  useEffect(() => {
+    if (status === "completed") {
+      console.log(loadedData);
+      if(true){
+        localStorage.setItem('userdata', JSON.stringify(loadedData));
+        console.log("items", JSON.parse(localStorage.getItem('userdata')));
+      }
+      localStorage.setItem("usertype", JSON.stringify(usertype));
+      if (usertype === "student") {
+        window.location.href = "/s/";
+      }
+      else if (usertype === "faculty"){
+        window.location.href = "/f/";
+      }
+      else if (usertype === "admin"){
+        window.location.href = "/a/";
+      }
     }
-    else if (selectUser === "f"){
-      window.location.href = "/f/";
-    }
-    else if (selectUser === "a"){
-      window.location.href = "/a/";
-    }
+  })
+
+  const fetchuserdetails = (userId) => {
+    const data = [usertype, userId]
+    sendRequest(data)
+  }
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        const userId = user.uid;
+        fetchuserdetails(userId)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
-    const emailvalidations = {
+
+  const emailvalidations = {
     required: "Email is required",
     pattern: {
       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -146,7 +161,10 @@ const SignIn = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                {...register("email", emailvalidations)}
+                {...register("email", {
+                  onChange: (e) => setEmail(e.target.value),
+                  emailvalidations,
+                })}
               />
               {errors.email && (
                 <span className="text-red mb-6">{errors.email.message}</span>
@@ -156,10 +174,9 @@ const SignIn = () => {
                 fullWidth
                 className="mt-10"
                 variant="outlined"
-                type={showPassword ? "text" : "password"} // <-- This is where the magic happens
-                // onChange=
+                
+                type={showPassword ? "text" : "password"} 
                 InputProps={{
-                  // <-- This is where the toggle button is added.
                   endAdornment: (
                     <InputAdornment position="end">
                       <IconButton
@@ -172,7 +189,10 @@ const SignIn = () => {
                     </InputAdornment>
                   ),
                 }}
-                {...register("password", passwordValidations)}
+                {...register("password", {
+                  onChange: (e) => setPassword(e.target.value),
+                  passwordValidations
+                })}
               />
               {errors.password && (
                 <span className="text-red mb-6">{errors.password.message}</span>
@@ -186,14 +206,14 @@ const SignIn = () => {
                 <Select
                   labelId="selectUser"
                   id="selectUser"
-                  value={user}
+                  value={usertype}
                   label="User"
                   name="selectUser"
                   onChange={handleChange}
                 >
-                  <MenuItem value="s">Student</MenuItem>
-                  <MenuItem value="f">Faculty</MenuItem>
-                  <MenuItem value="a">Admin</MenuItem>
+                  <MenuItem value="student">Student</MenuItem>
+                  <MenuItem value="Faculty">Faculty</MenuItem>
+                  <MenuItem value="Admin">Admin</MenuItem>
                 </Select>
               </FormControl>
               <FormControlLabel

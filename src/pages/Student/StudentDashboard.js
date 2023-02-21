@@ -10,7 +10,7 @@ import Marks from "../../data/marks.json";
 import Divider from "@mui/material/Divider";
 import Navbar from "./Navbar"
 
-export default function BasicTable() {
+const StudentDashboard = () => {
   return (
     <>
     <Navbar />
@@ -61,3 +61,5 @@ export default function BasicTable() {
     </>
   );
 }
+
+export default StudentDashboard;

@@ -5,7 +5,6 @@ import { useEditor } from "../context/AppContext";
 import qs from "qs";
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
-import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import Dialog from '@mui/material/Dialog';
 
@@ -15,10 +14,6 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 const CompileButton = (props) => {
   const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {

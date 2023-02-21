@@ -430,7 +430,7 @@
           }
         }
       },
-      "Subjects": {
+      "courses": {
         "211T405": {
           "code": "211T405",
           "title": "Web Technologies",
@@ -546,13 +546,92 @@
           "sem": "4"
         }
       },
+      "subjects": {
+        "3rdsem": {
+          "listofsubjects": [
+            "Data Structre",
+            "DataBase Management System",
+            "Data Communication System",
+            "Digital Logic Design",
+            "Disecrete Mathematics Structure",
+            "JAVA"
+          ],
+          "A": {
+            "allotment": [
+              {
+                "subject": "Data Structre",
+                "faculty": "H"
+              },
+              {
+                "subject": "DataBase Management System",
+                "faculty": "B"
+              },
+              {
+                "subject": "Data Communication System",
+                "faculty": "D"
+              },
+              {
+                "subject": "Digital Logic Design",
+                "faculty": "D"
+              },
+              {
+                "subject": "Disecrete Mathematics Structure",
+                "faculty": "E"
+              },
+              {
+                "subject": "JAVA",
+                "faculty": "F"
+              }
+            ]
+          },
+          "B": {
+            "allotment": [
+              {
+                "subject": "Data Structre",
+                "faculty": "H"
+              },
+              {
+                "subject": "DataBase Management System",
+                "faculty": "B"
+              },
+              {
+                "subject": "Data Communication System",
+                "faculty": "D"
+              },
+              {
+                "subject": "Digital Logic Design",
+                "faculty": "D"
+              },
+              {
+                "subject": "Disecrete Mathematics Structure",
+                "faculty": "E"
+              },
+              {
+                "subject": "JAVA",
+                "faculty": "F"
+              }
+            ]
+          }
+        },
+        "8thsem": [
+          {
+            "name": "8th",
+            "type": "8th",
+            "description": "8th",
+            "image": "8th",
+            "price": "8th",
+            "quantity": "8th",
+            "id": "8th"
+          }
+        ]
+      },
       "CurrentSemesters": {
         "2ndYear": "4thSem",
         "3rdYear": "6thSem",
         "4thYear": "8thSem"
       },
       "Labs": {
-        "1stSem": {
+        "8thsem": {
           "python": {
             "questions": {
               "1": {
@@ -668,7 +747,42 @@
                 ]
               }
             },
-            "marks": {}
+            "marks": {
+              "19341A1217": {
+                "1": {
+                  "id": "1",
+                  "marks": ""
+                },
+                "2": {
+                  "id": "2",
+                  "marks": ""
+                },
+                "3": {
+                  "id": "3",
+                  "marks": ""
+                },
+                "4": {
+                  "id": "4",
+                  "marks": ""
+                },
+                "5": {
+                  "id": "5",
+                  "marks": ""
+                },
+                "6": {
+                  "id": "6",
+                  "marks": ""
+                },
+                "7": {
+                  "id": "7",
+                  "marks": ""
+                },
+                "8": {
+                  "id": "8",
+                  "marks": ""
+                }
+              }
+            }
           }
         }
       },
@@ -679,6 +793,47 @@
       "6thSem": {},
       "7thSem": {},
       "8thSem": {}
+    }
+  },
+  "users": {
+    "student": {
+      "EG7AnJIeMwRikXLPtXJ9TEHHYaw1": {
+        "jntu": "19341A1217",
+        "dept": "IT",
+        "year": "2019"
+      },
+      "5CIoc2j9MCbog8FIgpVQCw8Pd1x2": {
+        "jntu": "19341A1226",
+        "dept": "IT",
+        "year": "2019"
+      },
+      "oDr0M0jolyT8QXmD67M8z8hIwXA2": {
+        "jntu": "19341A1210",
+        "dept": "IT",
+        "year": "2019"
+      },
+      "28t221VeT2emuPahMYApeUCG19K2": {
+        "jntu": "19341A1207",
+        "dept": "IT",
+        "year": "2019"
+      },
+      "M8qGJV3czIU8kk0IA5GjkqRfUbI3": {
+        "jntu": "19341A1259",
+        "dept": "IT",
+        "year": "2019"
+      }
+    },
+    "faculty": {
+      "ObH1RbvgpZOyc2rCjArWziUt4ip1": {
+        "id": "02",
+        "dept": "IT"
+      }
+    },
+    "admin": {
+      "3crpwSo1KncOlvmGJrpL2ksi4ir2": {
+        "id": "01",
+        "dept": "IT"
+      }
     }
   }
 }

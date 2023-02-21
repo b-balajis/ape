@@ -1,13 +1,31 @@
+import { useEffect } from "react";
 import Python from "../../assets/img/python.jpg";
 import Java from "../../assets/img/Java.jpg";
 import CPP from "../../assets/img/cpp.jpg";
 import { NavLink, useLocation } from "react-router-dom";
+import useHttp from "../../hooks/use-http";
+import { renderSUbjects } from "../../api";
 
 const Subjects = () => {
+  const { sendRequest, status, data: loadedData, error } = useHttp(
+    renderSUbjects,
+    true
+  )
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('userdata'));
+    const dept = data.dept;
+    sendRequest(dept);
+  }, [sendRequest]);
+
+  console.log(loadedData, status, error);
+
   // const { type } = useParams();
 
   const location = useLocation();
   console.log("subjects", location);
+
+
   const SubjectDetails = [
     {
       id: 1,
@@ -30,6 +48,7 @@ const Subjects = () => {
       image: CPP,
     }
   ];
+
 
   return (
     <>
@@ -57,6 +76,9 @@ const Subjects = () => {
           </div>
         ))}
       </div>
+        {loadedData?.map((subject) => (
+          <p>{subject}</p>
+        ))}
       </div>
     </>
   );

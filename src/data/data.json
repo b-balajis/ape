@@ -1,0 +1,43 @@
+{
+    "users": {
+        "student":{
+            "EG7AnJIeMwRikXLPtXJ9TEHHYaw1": {
+                "jntu": "19341A1217",
+                "dept": "IT",
+                "year": "2019"
+            },
+            "5CIoc2j9MCbog8FIgpVQCw8Pd1x2":{
+                "jntu": "19341A1226",
+                "dept": "IT",
+                "year": "2019"
+            },
+            "oDr0M0jolyT8QXmD67M8z8hIwXA2": {
+                "jntu": "19341A1210",
+                "dept": "IT",
+                "year": "2019"
+            },
+            "28t221VeT2emuPahMYApeUCG19K2":{
+                "jntu": "19341A1207",
+                "dept": "IT",
+                "year": "2019"
+            },
+            "M8qGJV3czIU8kk0IA5GjkqRfUbI3":{
+                "jntu": "19341A1259",
+                "dept": "IT",
+                "year": "2019"
+            }
+        },
+        "faculty":{
+            "ObH1RbvgpZOyc2rCjArWziUt4ip1":{
+                "id": "02",
+                "dept": "IT"
+            }
+        },
+        "admin":{
+            "3crpwSo1KncOlvmGJrpL2ksi4ir2":{
+                "id": "01",
+                "dept": "IT"
+            }
+        }
+    }
+}
