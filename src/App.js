@@ -19,7 +19,6 @@ import AddSubject from "./pages/Admin/AddSubject";
 import Home from "./page/Home";
 import AddQuestion from "./pages/Faculty/AddQuestion";
 import Management from "./pages/Admin/Management";
-// import { db } from "./firebase";
 
 function App() {
   return (

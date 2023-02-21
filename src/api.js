@@ -1,26 +1,50 @@
 
-const FIREBASE_DOMAIN = 'https://ape-code-default-rtdb.firebaseio.com/';
+const FIREBASE_DOMAIN = "https://ape-code-default-rtdb.firebaseio.com/";
 
-export async function students(dept) {
-    const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/Students.json`);
-    const data = await response.json();
+export async function signin(payload) {
+  const type = payload[0];
+  const uid = payload[1];
+  console.log(type, uid);
+  const response = await fetch(`${FIREBASE_DOMAIN}/users/${type}/${uid}.json`);
+  const data = await response.json();
 
-    if (!response.ok) {
-        throw new Error(data.message || 'Could not fetch students.');
-    }
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
 
-    const transformedStudents = [];
+  return data;
+}
 
-    for (const key in data) {
-        const studentObj = {
-            id: key,
-            ...data[key],
-        };
+export async function renderSUbjects(dept) {
+  // const dept = payload[0];
+  // const sem = payload[1];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/subjects/3rdsem/listofsubjects.json`
+  );
+  const data = await response.json();
 
-        transformedStudents.push(studentObj);
-    }
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
 
-    return transformedStudents;
+  return data;
+}
+
+export async function renderMarks(payload) {
+  const sem = payload[0];
+  const subject = payload[1];
+  const marks = payload[2];
+  const jntu = payload[3];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/Labs/${sem}/${subject}/${marks}/${jntu}.json`
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
+
+  return data;
 }
 
 export async function getAllQuotes() {
@@ -28,7 +52,7 @@ export async function getAllQuotes() {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Could not fetch quotes.');
+    throw new Error(data.message || "Could not fetch quotes.");
   }
 
   const transformedQuotes = [];
@@ -50,7 +74,7 @@ export async function getSingleQuote(quoteId) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Could not fetch quote.');
+    throw new Error(data.message || "Could not fetch quote.");
   }
 
   const loadedQuote = {
@@ -63,33 +87,36 @@ export async function getSingleQuote(quoteId) {
 
 export async function addQuote(quoteData) {
   const response = await fetch(`${FIREBASE_DOMAIN}/quotes.json`, {
-    method: 'POST',
+    method: "POST",
     body: JSON.stringify(quoteData),
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Could not create quote.');
+    throw new Error(data.message || "Could not create quote.");
   }
 
   return null;
 }
 
 export async function addComment(requestData) {
-  const response = await fetch(`${FIREBASE_DOMAIN}/comments/${requestData.quoteId}.json`, {
-    method: 'POST',
-    body: JSON.stringify(requestData.commentData),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/comments/${requestData.quoteId}.json`,
+    {
+      method: "POST",
+      body: JSON.stringify(requestData.commentData),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Could not add comment.');
+    throw new Error(data.message || "Could not add comment.");
   }
 
   return { commentId: data.name };
@@ -101,7 +128,7 @@ export async function getAllComments(quoteId) {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || 'Could not get comments.');
+    throw new Error(data.message || "Could not get comments.");
   }
 
   const transformedComments = [];
