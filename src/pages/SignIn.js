@@ -25,9 +25,21 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import useHttp from "../hooks/use-http";
 import { students } from "../api";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const theme = createTheme();
 const SignIn = () => {
+//   const auth = getAuth();
+// signInWithEmailAndPassword(auth, email, password)
+//   .then((userCredential) => {
+//     // Signed in 
+//     const user = userCredential.user;
+//     // ...
+//   })
+//   .catch((error) => {
+//     const errorCode = error.code;
+//     const errorMessage = error.message;
+//   });
   const { sendRequest, status, data: loadedData, error } = useHttp(
     students,
     true
