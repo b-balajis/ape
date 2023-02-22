@@ -1,4 +1,3 @@
-
 const FIREBASE_DOMAIN = "https://ape-code-default-rtdb.firebaseio.com/";
 
 export async function signin(payload) {
@@ -16,8 +15,8 @@ export async function signin(payload) {
 }
 
 export async function renderPresentSem(dept) {
-  const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch.json`);
-  const data = await response.json()
+  const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch/.json`);
+  const data = await response.json();
 
   if (!response.ok) {
     throw new Error(data.message || "Could not fetch Data.");
@@ -28,9 +27,9 @@ export async function renderPresentSem(dept) {
 
 export async function renderSubjects(payload) {
   const dept = payload[0];
-  const sem = payload[1]
+  const sem = payload[1];
   const response = await fetch(
-    `${FIREBASE_DOMAIN}/GMRIT/${dept}/subjects/${sem}/listofsubjects.json`
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/listofsubjects.json`
   );
   const data = await response.json();
 
@@ -39,6 +38,68 @@ export async function renderSubjects(payload) {
   }
 
   return data;
+}
+
+export async function renderQuestions(payload) {
+  const dept = payload[0];
+  const sem = payload[1];
+  const subject = payload[2];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/questions.json`
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
+
+  return data;
+}
+
+export async function fetchQuestion(payload) {
+  const dept = payload[0];
+  const sem = payload[1];
+  const subject = payload[2];
+  const question = payload[3];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/questions/${question}.json`
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
+
+  return data;
+}
+
+export async function marksAllotment(payload) {
+  console.log(payload);
+  const dept = payload[0];
+  const sem = payload[1];
+  const subject = payload[2];
+  const jntu = payload[3];
+  const qnum = payload[4];
+  const result = payload[5];
+  console.log(result, "api result");
+  console.log(JSON.stringify(result));
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/marks/${jntu}/${qnum}/marks.json`,
+    {
+      method: "PUT",
+      body: (result),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not create quote.");
+  }
+
+  return null;
 }
 
 export async function renderMarks(payload) {

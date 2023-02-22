@@ -649,6 +649,22 @@
           "listofsubjects": ["python"],
           "python": {
             "questions": {
+              "0":{
+                "qno": 1,
+                "question": "Write a program to print hello world",
+                "sampleinput": "",
+                "sampleoutput": "Hello World",
+                "testcases": [
+                  {
+                    "input": "",
+                    "output": "Hello World\n"
+                  },
+                  {
+                    "input": "",
+                    "output": "Hello World\n"
+                  }
+                ]
+              },
               "1": {
                 "qno": 2,
                 "question": "Write a program to sum two numbers",
@@ -673,11 +689,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "120"
+                    "output": "120\n"
                   },
                   {
                     "input": "6",
-                    "output": "720"
+                    "output": "720\n"
                   }
                 ]
               },
@@ -689,11 +705,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "15"
+                    "output": "15\n"
                   },
                   {
                     "input": "6",
-                    "output": "21"
+                    "output": "21\n"
                   }
                 ]
               },
@@ -705,11 +721,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "15"
+                    "output": "15\n"
                   },
                   {
                     "input": "6",
-                    "output": "21"
+                    "output": "21\n"
                   }
                 ]
               },
@@ -721,11 +737,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "15"
+                    "output": "15\n"
                   },
                   {
                     "input": "6",
-                    "output": "21"
+                    "output": "21\n"
                   }
                 ]
               },
@@ -737,11 +753,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "15"
+                    "output": "15\n"
                   },
                   {
                     "input": "6",
-                    "output": "21"
+                    "output": "21\n"
                   }
                 ]
               },
@@ -753,11 +769,11 @@
                 "testcases": [
                   {
                     "input": "5",
-                    "output": "15"
+                    "output": "15\n"
                   },
                   {
                     "input": "6",
-                    "output": "21"
+                    "output": "21\n"
                   }
                 ]
               }

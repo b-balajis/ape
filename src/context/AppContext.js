@@ -16,6 +16,7 @@ export const AppProvider = ({ children }) => {
   const [output, setOutput] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const [headTags, setHeadTags] = useState("");
   const [cssFramework, setCssFramework] = useState("none");
@@ -52,6 +53,8 @@ export const AppProvider = ({ children }) => {
         setCssFramework,
         error,
         setError,
+        submitted,
+        setSubmitted,
       }}
     >
       {children}
