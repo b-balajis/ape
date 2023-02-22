@@ -3,9 +3,10 @@ import Python from "../../assets/img/python.jpg";
 import Java from "../../assets/img/Java.jpg";
 import CPP from "../../assets/img/cpp.jpg";
 import { NavLink, useLocation } from "react-router-dom";
-import {  renderPresentSem } from "../../api/AppFunctions";
-import Apicalling from "../../api/ApiCall";
-
+import { renderPresentSem } from "../../api/AppFunctions";
+import Apicall from "../../api/ApiCall";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Subjects = () => {
   // const { sendRequestforSub, status, data: loadedData, error } = useHttp( renderPresentSem,
@@ -14,17 +15,23 @@ const Subjects = () => {
 
   // const { sendRequest, status, data: loadedData, error } = useHttp(renderPresentSem, renderSubjects, true);
 
-  const data = JSON.parse(localStorage.getItem('userdata'));
+  const data = JSON.parse(localStorage.getItem("userdata"));
   const dept = data.dept;
   // const jntu = data.jntu;
   // const batch = data.year;
 
-  const handleapicall = () => {
-    return (
-      <Apicalling payload={dept} api={renderPresentSem} />
-    )
-  }
+  useEffect(() => (
+    // handleapicall()
+    <Apicall payload={dept} api={renderPresentSem} />
+  ), [])
 
+  const handleapicall = () => {
+    console.log("calling");
+    // return <Apicall payload={dept} api={renderPresentSem} />;
+  };
+
+  const {data: redux} = useSelector((state) => state.appSlice);
+  // console.log(redux, "--------");
 
   // const renderingSubjects = (sem) => {
   //   const payload = [dept, sem];
@@ -44,7 +51,7 @@ const Subjects = () => {
   //       console.log(loadedData[key].sem);
   //       renderingSubjects(loadedData[key].sem);
   //     }
-      
+
   //   }
   // }
 
@@ -57,7 +64,6 @@ const Subjects = () => {
 
   const location = useLocation();
   console.log("subjects", location);
-
 
   const SubjectDetails = [
     {
@@ -79,37 +85,34 @@ const Subjects = () => {
       id: 4,
       name: "C",
       image: CPP,
-    }
+    },
   ];
-
 
   return (
     <>
-        {handleapicall()}
+      {/* {handleapicall()} */}
       <div className="mt-8">
-      <div className="flex items-center justify-center">
-        {SubjectDetails?.map((subject) => (
-          <div className="flex flex-wrap text-center mr-4">
-            <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
-              <NavLink
-                to={`${subject.name.toLowerCase()}`}
-                key={subject.name}
-                state={
-                  {
+        <div className="flex items-center justify-center">
+          {SubjectDetails?.map((subject) => (
+            <div className="flex flex-wrap text-center mr-4">
+              <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
+                <NavLink
+                  to={`${subject.name.toLowerCase()}`}
+                  key={subject.name}
+                  state={{
                     subjectName: subject.name,
-                  }
-                }
-              >
-                <img
-                  src={subject.image}
-                  alt={subject.name}
-                  className="rounded-xl h-40 w-64"
-                />
-              </NavLink>
+                  }}
+                >
+                  <img
+                    src={subject.image}
+                    alt={subject.name}
+                    className="rounded-xl h-40 w-64"
+                  />
+                </NavLink>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
         {/* {loadedData?.map((subject) => (
           <p>{subject}</p>
         ))} */}

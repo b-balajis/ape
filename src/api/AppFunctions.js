@@ -16,6 +16,7 @@ export async function signin(payload) {
 }
 
 export async function renderPresentSem(dept) {
+  console.log(dept);
   const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch.json`);
   const data = await response.json()
 
