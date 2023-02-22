@@ -42,6 +42,20 @@
           "name": "Mr. Ashutosh Kumar Choudhary"
         }
       },
+      "batch":{
+        "2ndyear":{
+          "sem": "4thsem",
+          "batch": "2021"
+        },
+        "3rdyear":{
+          "sem": "6thsem",
+          "batch": "2020"
+        },
+        "4thyear":{
+          "sem": "8thsem",
+          "batch": "2019"
+        }
+      },
       "Students": {
         "2019": {
           "19341A1201": {
@@ -632,6 +646,7 @@
       },
       "Labs": {
         "8thsem": {
+          "listofsubjects": ["python"],
           "python": {
             "questions": {
               "1": {

@@ -1,24 +1,57 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import Python from "../../assets/img/python.jpg";
 import Java from "../../assets/img/Java.jpg";
 import CPP from "../../assets/img/cpp.jpg";
 import { NavLink, useLocation } from "react-router-dom";
-import useHttp from "../../hooks/use-http";
-import { renderSUbjects } from "../../api";
+import {  renderPresentSem } from "../../api/AppFunctions";
+import Apicalling from "../../api/ApiCall";
+
 
 const Subjects = () => {
-  const { sendRequest, status, data: loadedData, error } = useHttp(
-    renderSUbjects,
-    true
-  )
+  // const { sendRequestforSub, status, data: loadedData, error } = useHttp( renderPresentSem,
+  //   true
+  // )
 
-  useEffect(() => {
-    const data = JSON.parse(localStorage.getItem('userdata'));
-    const dept = data.dept;
-    sendRequest(dept);
-  }, [sendRequest]);
+  // const { sendRequest, status, data: loadedData, error } = useHttp(renderPresentSem, renderSubjects, true);
 
-  console.log(loadedData, status, error);
+  const data = JSON.parse(localStorage.getItem('userdata'));
+  const dept = data.dept;
+  // const jntu = data.jntu;
+  // const batch = data.year;
+
+  const handleapicall = () => {
+    return (
+      <Apicalling payload={dept} api={renderPresentSem} />
+    )
+  }
+
+
+  // const renderingSubjects = (sem) => {
+  //   const payload = [dept, sem];
+  //   console.log(payload);
+  //   sendRequest(payload)
+  //   console.log(error);
+  // }
+
+  // useEffect(() => {
+  //   sendRequest(dept)
+  // }, [sendRequest, dept])
+
+  // for (const key in loadedData) {
+  //   if (Object.hasOwnProperty.call(loadedData, key)) {
+  //     const batchFromData = loadedData[key].batch;
+  //     if (batchFromData === batch){
+  //       console.log(loadedData[key].sem);
+  //       renderingSubjects(loadedData[key].sem);
+  //     }
+      
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   const payload = [dept, batch]
+  //   sendRequest(payload);
+  // }, [sendRequest, dept, batch]);
 
   // const { type } = useParams();
 
@@ -52,6 +85,7 @@ const Subjects = () => {
 
   return (
     <>
+        {handleapicall()}
       <div className="mt-8">
       <div className="flex items-center justify-center">
         {SubjectDetails?.map((subject) => (
@@ -76,9 +110,9 @@ const Subjects = () => {
           </div>
         ))}
       </div>
-        {loadedData?.map((subject) => (
+        {/* {loadedData?.map((subject) => (
           <p>{subject}</p>
-        ))}
+        ))} */}
       </div>
     </>
   );

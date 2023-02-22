@@ -26,7 +26,7 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
 import useHttp from "../hooks/use-http";
-import { signin } from "../api";
+import { signin } from "../api/AppFunctions";
 
 const theme = createTheme();
 const SignIn = () => {
@@ -39,7 +39,6 @@ const SignIn = () => {
   //   sendRequest("IT")
   //   ), [sendRequest])
   //   console.log(loadedData);
-  console.log(error, "error");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [usertype, setUserType] = useState("");
@@ -56,7 +55,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (status === "completed") {
-      console.log(loadedData);
+      console.log(loadedData, error);
       if(true){
         localStorage.setItem('userdata', JSON.stringify(loadedData));
         console.log("items", JSON.parse(localStorage.getItem('userdata')));

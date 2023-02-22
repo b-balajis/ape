@@ -15,16 +15,27 @@ export async function signin(payload) {
   return data;
 }
 
-export async function renderSUbjects(dept) {
-  // const dept = payload[0];
-  // const sem = payload[1];
+export async function renderPresentSem(dept) {
+  const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch.json`);
+  const data = await response.json()
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch Data.");
+  }
+
+  return data;
+}
+
+export async function renderSubjects(payload) {
+  const dept = payload[0];
+  const sem = payload[1]
   const response = await fetch(
-    `${FIREBASE_DOMAIN}/GMRIT/${dept}/subjects/3rdsem/listofsubjects.json`
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/subjects/${sem}/listofsubjects.json`
   );
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(data.message || "Could not fetch users.");
+    throw new Error(data.message || "Could not fetch Subjects.");
   }
 
   return data;
