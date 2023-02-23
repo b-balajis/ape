@@ -84,10 +84,10 @@ export async function marksAllotment(payload) {
   console.log(result, "api result");
   console.log(JSON.stringify(result));
   const response = await fetch(
-    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/marks/${jntu}/${qnum}/marks.json`,
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/marks/${jntu}/${qnum}.json`,
     {
       method: "PUT",
-      body: (result),
+      body: JSON.stringify(result),
       headers: {
         "Content-Type": "application/json",
       },
