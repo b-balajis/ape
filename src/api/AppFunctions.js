@@ -1,3 +1,4 @@
+// signin page api
 const FIREBASE_DOMAIN = "https://ape-code-default-rtdb.firebaseio.com/";
 
 export async function signin(payload) {
@@ -14,8 +15,44 @@ export async function signin(payload) {
   return data;
 }
 
+// to fetch present user sem
 export async function renderPresentSem(dept) {
   const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch/.json`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch Data.");
+  }
+
+  return data;
+}
+
+export async function renderAllPresentSemesters(payload) {
+  const dept = payload[0];
+  console.log(dept);
+  const response = await fetch(`${FIREBASE_DOMAIN}/GMRIT/${dept}/batch.json`);
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch Data.");
+  }
+
+  return data;
+}
+
+export async function handleSemesterUpdate(payload) {
+  const dept = payload[0];
+  const sem = payload[1];
+  const year = payload[2];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/batch/${year}.json`,
+    {
+      method: "PUT",
+      body: JSON.stringify({
+        sem,
+      }),
+    }
+  );
   const data = await response.json();
 
   if (!response.ok) {
@@ -54,6 +91,24 @@ export async function renderQuestions(payload) {
   }
 
   return data;
+}
+
+export async function fetchStudentDashboard(payload){
+  const dept = payload[0];
+  const sem = payload[1];
+  const subject = payload[2];
+  const jntu = payload[3];
+  const response = await fetch(
+    `${FIREBASE_DOMAIN}/GMRIT/${dept}/Labs/${sem}/${subject}/marks/${jntu}.json`
+  );
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Could not fetch users.");
+  }
+
+  return data;
+
 }
 
 export async function fetchQuestion(payload) {

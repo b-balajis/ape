@@ -7,9 +7,8 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 // import Subjects from "../../data/Subjects.json";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { renderQuestions } from "../../api/AppFunctions";
-import { useState } from "react";
 
 const Subject = () => {
   const [questions, setQuestions] = useState("")

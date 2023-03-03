@@ -7,12 +7,12 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 import { NavLink } from "react-router-dom";
+import { useEditor } from "../../context/AppContext";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -20,10 +20,11 @@ const pages = [
 ]
 const settings = [
   { name: "Profile", path: "/profile" },
-  { name: "Logout", path: "/logout" },
+  { name: "Logout", path: "/" },
 ];
 
 const Navbar = () => {
+  const { jntu } = useEditor() || {};
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -146,9 +147,10 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+              </IconButton> */}
+              <Typography onClick={handleOpenUserMenu}>{jntu}</Typography>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}

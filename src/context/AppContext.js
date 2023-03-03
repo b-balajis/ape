@@ -22,6 +22,12 @@ export const AppProvider = ({ children }) => {
   const [cssFramework, setCssFramework] = useState("none");
   const [error, setError] = useState("");
 
+  const [jntu, setJntu] = useState("");
+  const [dept, setDept] = useState("");
+  const [batch, setBatch] = useState("");
+  const [sem, setSem] = useState("");
+  const [usetType, setUserType] = useState("");
+
   return (
     <AppContext.Provider
       value={{
@@ -55,6 +61,16 @@ export const AppProvider = ({ children }) => {
         setError,
         submitted,
         setSubmitted,
+        jntu,
+        setJntu,
+        dept,
+        setDept,
+        batch,
+        setBatch,
+        sem,
+        setSem,
+        usetType,
+        setUserType,
       }}
     >
       {children}

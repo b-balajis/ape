@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -8,6 +9,8 @@ import Select from "@mui/material/Select";
 import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
 import SemesterData from "./SemesterData";
+import { renderAllPresentSemesters } from "../../api/AppFunctions";
+
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -21,7 +24,7 @@ const MenuProps = {
 };
 
 const Mangement = () => {
-  const [secondyear, setSecondYear] = useState([]);
+  const [secondyear, setSecondYear] = useState("");
   const [thirdyear, setThirdYear] = useState([]);
   const [fourthyear, setFourthYear] = useState([]);
   const [editSecondYear, setEditSecondYear] = useState(false);
@@ -34,6 +37,25 @@ const Mangement = () => {
     thirdYear: "5th Sem",
     fourthYear: "7th Sem",
   }
+
+  const data = JSON.parse(localStorage.getItem("userdata"));
+  const payload = [data.dept]
+
+  useEffect(() => {
+    const fetchSemesters = async () => {
+      const semesters = await renderAllPresentSemesters(payload);
+      setSecondYear(semesters["2ndyear"].sem);
+      setThirdYear(semesters["3rdyear"].sem);
+      setFourthYear(semesters["4thyear"].sem);
+      // setThirdYear(semesters.thirdYear);
+      // setFourthYear(semesters.fourthYear);
+      // const two = semesters["2ndyear"].sem
+      // console.log(two);
+      // setSecondYear(two);
+    }
+    fetchSemesters();
+  }, [])
+  console.log(secondyear, "jhhhhhh");
 
   const handleChangeSecondYear = (event) => {
     const {
@@ -98,10 +120,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editSecondYear ? false : true}
             >
-              <MenuItem key={3} value="3rd Sem">
+              <MenuItem key={3} value="3rdsem">
                 3rd Sem
               </MenuItem>
-              <MenuItem key={4} value="4th Sem">
+              <MenuItem key={4} value="4thsem">
                 4th Sem
               </MenuItem>
             </Select>
@@ -135,10 +157,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editThirdYear ? false : true}
             >
-              <MenuItem key={3} value="5th Sem">
+              <MenuItem key={3} value="5thsem">
                 5th Sem
               </MenuItem>
-              <MenuItem key={4} value="6th Sem">
+              <MenuItem key={4} value="6thsem">
                 6th Sem
               </MenuItem>
             </Select>
@@ -172,10 +194,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editFourthYear ? false : true}
             >
-              <MenuItem key={3} value="7th Sem">
+              <MenuItem key={3} value="7thsem">
                 7th Sem
               </MenuItem>
-              <MenuItem key={4} value="8th Sem">
+              <MenuItem key={4} value="8thsem">
                 8th Sem
               </MenuItem>
             </Select>
