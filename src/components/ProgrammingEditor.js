@@ -7,9 +7,7 @@ import { useEffect, useState } from "react";
 import { fetchQuestion } from "../api/AppFunctions";
 import { marksAllotment } from "../api/AppFunctions";
 
-
 const ProgrammingEditor = () => {
-
   const { code, setCode, output, error } = useEditor() || {};
   const [question, setQuestion] = useState("");
 
@@ -23,7 +21,6 @@ const ProgrammingEditor = () => {
   const payload = [dept, sem, sub, questionNum];
   const subjectName = sub;
 
-  
   useEffect(() => {
     function disableRightClick(e) {
       if (e.button === 2) {
@@ -32,10 +29,10 @@ const ProgrammingEditor = () => {
       }
     }
 
-    document.addEventListener('contextmenu', disableRightClick);
+    document.addEventListener("contextmenu", disableRightClick);
 
     return () => {
-      document.removeEventListener('contextmenu', disableRightClick);
+      document.removeEventListener("contextmenu", disableRightClick);
     };
   }, []);
 
@@ -47,12 +44,12 @@ const ProgrammingEditor = () => {
     getQuestion();
   }, []);
 
-  const handleMarksAllotment = ()  => {
+  const handleMarksAllotment = () => {
     const result = (output[0] / output[1]) * 15;
     const setResult = {
       id: questionNum,
-      marks: result
-    }
+      marks: result,
+    };
     const resultPayload = [dept, sem, sub, jntu, questionNum, setResult];
     const marks = marksAllotment(resultPayload);
     console.log(marks);
@@ -69,7 +66,7 @@ const ProgrammingEditor = () => {
         </div>
       );
     }
-  } 
+  };
 
   return (
     <>

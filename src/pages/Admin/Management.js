@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -10,7 +10,6 @@ import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
 import SemesterData from "./SemesterData";
 import { renderAllPresentSemesters } from "../../api/AppFunctions";
-
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -36,10 +35,10 @@ const Mangement = () => {
     secondYear: "3rd Sem",
     thirdYear: "5th Sem",
     fourthYear: "7th Sem",
-  }
+  };
 
   const data = JSON.parse(localStorage.getItem("userdata"));
-  const payload = [data.dept]
+  const payload = [data.dept];
 
   useEffect(() => {
     const fetchSemesters = async () => {
@@ -52,9 +51,9 @@ const Mangement = () => {
       // const two = semesters["2ndyear"].sem
       // console.log(two);
       // setSecondYear(two);
-    }
+    };
     fetchSemesters();
-  }, [])
+  }, []);
   console.log(secondyear, "jhhhhhh");
 
   const handleChangeSecondYear = (event) => {

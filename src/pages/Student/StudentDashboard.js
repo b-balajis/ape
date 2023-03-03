@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -9,15 +10,12 @@ import Paper from "@mui/material/Paper";
 // import Marks from "../../data/marks.json";
 import Divider from "@mui/material/Divider";
 import Navbar from "./Navbar";
-import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { renderQuestions, fetchStudentDashboard } from "../../api/AppFunctions";
 
 const StudentDashboard = () => {
   const [questions, setQuestions] = useState("");
   const [marks, setMarks] = useState("");
-
-  const link = useParams();
 
   const sem = localStorage.getItem("sem");
   const data = JSON.parse(localStorage.getItem("userdata"));

@@ -11,15 +11,15 @@ import { useEffect, useState } from "react";
 import { renderQuestions } from "../../api/AppFunctions";
 
 const Subject = () => {
-  const [questions, setQuestions] = useState("")
+  const [questions, setQuestions] = useState("");
   const location = useLocation();
 
   const link = useParams();
 
   const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("userdata"))
+  const data = JSON.parse(localStorage.getItem("userdata"));
   const dept = data.dept;
-  const sub = link.subjectName
+  const sub = link.subjectName;
 
   const payload = [dept, sem, sub];
   useEffect(() => {
@@ -28,11 +28,9 @@ const Subject = () => {
       setQuestions(questions);
     }
     fetchQuestions();
-    }, []
-  )
+  }, []);
 
   console.log(questions);
-
 
   let subName = location.state.subjectName;
   // const subjectQuestions = Subjects[subName];
@@ -44,50 +42,50 @@ const Subject = () => {
   return (
     <>
       <Navbar />
-     {questions && (
-       <div className="flex flex-col items-center justify-center mt-8">
-       {questions.map((questions) => {
-         return (
-           <div className="my-2 w-9/12">
-             <Card sx={{ maxWidth: 1500 }}>
-               <div className="flex justify-between my-2">
-                 <div>
-                   <CardActionArea>
-                     <CardContent>
-                       <Typography gutterBottom variant="h6" component="div">
-                         {questions.qno}. {questions.question}
-                       </Typography>
-                     </CardContent>
-                   </CardActionArea>
-                 </div>
-                 <div>
-                   <CardActions>
-                     <NavLink
-                       to={`${questions.qno}`}
-                       key={questions.qno}
-                       state={{
-                         question: questions,
-                         subjectName: subName,
-                       }}
-                     >
-                       <Button
-                         variant="contained"
-                         size="large"
-                         key={questions.id}
-                         onClick={() => handleSolve(questions.id)}
-                       >
-                         Solve
-                       </Button>
-                     </NavLink>
-                   </CardActions>
-                 </div>
-               </div>
-             </Card>
-           </div>
-         );
-       })}
-     </div>
-     )}
+      {questions && (
+        <div className="flex flex-col items-center justify-center mt-8">
+          {questions.map((questions) => {
+            return (
+              <div className="my-2 w-9/12">
+                <Card sx={{ maxWidth: 1500 }}>
+                  <div className="flex justify-between my-2">
+                    <div>
+                      <CardActionArea>
+                        <CardContent>
+                          <Typography gutterBottom variant="h6" component="div">
+                            {questions.qno}. {questions.question}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </div>
+                    <div>
+                      <CardActions>
+                        <NavLink
+                          to={`${questions.qno}`}
+                          key={questions.qno}
+                          state={{
+                            question: questions,
+                            subjectName: subName,
+                          }}
+                        >
+                          <Button
+                            variant="contained"
+                            size="large"
+                            key={questions.id}
+                            onClick={() => handleSolve(questions.id)}
+                          >
+                            Solve
+                          </Button>
+                        </NavLink>
+                      </CardActions>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 };

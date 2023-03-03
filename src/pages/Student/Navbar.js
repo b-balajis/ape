@@ -16,8 +16,8 @@ import { useEditor } from "../../context/AppContext";
 
 const pages = [
   { name: "Home", path: "/" },
-  { name: "Dashboard", path: "/dashboard"}
-]
+  { name: "Dashboard", path: "/dashboard" },
+];
 const settings = [
   { name: "Profile", path: "/profile" },
   { name: "Logout", path: "/" },
@@ -101,11 +101,8 @@ const Navbar = () => {
             >
               {pages.map((page, index) => (
                 <MenuItem key={index} onClick={handleCloseNavMenu}>
-                  <NavLink
-                    to={`/s${page.path}`}
-                    onClick={clicked}
-                  >
-                  <Typography textAlign="center">{page.name}</Typography>
+                  <NavLink to={`/s${page.path}`} onClick={clicked}>
+                    <Typography textAlign="center">{page.name}</Typography>
                   </NavLink>
                 </MenuItem>
               ))}
@@ -131,16 +128,14 @@ const Navbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <NavLink
-                to={`/s${page.path}`}
-              >
+              <NavLink to={`/s${page.path}`}>
                 <Button
-                key={index}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page.name}
-              </Button>
+                  key={index}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page.name}
+                </Button>
               </NavLink>
             ))}
           </Box>
@@ -170,9 +165,7 @@ const Navbar = () => {
             >
               {settings.map((setting, index) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <NavLink
-                    to={`/s${setting.path}`} 
-                  >
+                  <NavLink to={`/s${setting.path}`}>
                     <Typography textAlign="center">{setting.name}</Typography>
                   </NavLink>
                 </MenuItem>
@@ -183,5 +176,5 @@ const Navbar = () => {
       </Container>
     </AppBar>
   );
-}
+};
 export default Navbar;
