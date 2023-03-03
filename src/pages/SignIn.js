@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-// import Link from "@mui/material/Link";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-
+import { useEditor } from "../context/AppContext";
 import Vector from "../assets/img/se-vector.png";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -25,23 +24,17 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase";
-import useHttp from "../hooks/use-http";
+import Loader from "../components/Loader";
 import { signin } from "../api/AppFunctions";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 const SignIn = () => {
-  const { sendRequest, status, data: loadedData, error } = useHttp(
-    signin,
-    true
-  )
-
-  // useEffect(() => (
-  //   sendRequest("IT")
-  //   ), [sendRequest])
-  //   console.log(loadedData);
+  const { setJntu, setDept, setBatch, setUserType } = useEditor() || {};
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [usertype, setUserType] = useState("");
+  const [usertype, setUsersType] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -50,41 +43,43 @@ const SignIn = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const handleChange = (event) => {
-    setUserType(event.target.value);
+    setUsersType(event.target.value);
   };
 
-  useEffect(() => {
-    if (status === "completed") {
-      console.log(loadedData, error);
-      if(true){
-        localStorage.setItem('userdata', JSON.stringify(loadedData));
-        console.log("items", JSON.parse(localStorage.getItem('userdata')));
-      }
-      localStorage.setItem("usertype", JSON.stringify(usertype));
-      if (usertype === "student") {
-        window.location.href = "/s/";
-      }
-      else if (usertype === "faculty"){
-        window.location.href = "/f/";
-      }
-      else if (usertype === "admin"){
-        window.location.href = "/a/";
-      }
-    }
-  })
+  const Navigate = useNavigate();
 
+  // api call
   const fetchuserdetails = (userId) => {
-    const data = [usertype, userId]
-    sendRequest(data)
-  }
+    const data = [usertype, userId];
+    async function getUserData() {
+      const response = await signin(data);
+      setJntu(response.jntu);
+      setDept(response.dept);
+      setBatch(response.year);
+      setUserType(usertype);
+      renderUSerDashboard(usertype);
+    }
+    getUserData();
+  };
+
+  const renderUSerDashboard = (usertype) => {
+    if (usertype === "student") {
+      Navigate(`/s`);
+    } else if (usertype === "faculty") {
+      Navigate(`/f`);
+    } else if (usertype === "admin") {
+      Navigate(`/a`);
+    }
+  };
 
   const handleSignIn = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         const userId = user.uid;
-        fetchuserdetails(userId)
+        fetchuserdetails(userId);
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -173,8 +168,7 @@ const SignIn = () => {
                 fullWidth
                 className="mt-10"
                 variant="outlined"
-                
-                type={showPassword ? "text" : "password"} 
+                type={showPassword ? "text" : "password"}
                 InputProps={{
                   endAdornment: (
                     <InputAdornment position="end">
@@ -190,7 +184,7 @@ const SignIn = () => {
                 }}
                 {...register("password", {
                   onChange: (e) => setPassword(e.target.value),
-                  passwordValidations
+                  passwordValidations,
                 })}
               />
               {errors.password && (
@@ -229,6 +223,7 @@ const SignIn = () => {
                 Sign In
               </Button>
             </Box>
+            {isLoading && <Loader />}
           </Box>
         </Grid>
       </Grid>

@@ -13,21 +13,23 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 const CompileButton = (props) => {
-  const [open, setOpen] = React.useState(false);
+  const { code, setOutput, setError, isSubmitting, setIsSubmitting, setSubmitted } =
+    useEditor() || {};
+  const [compiled, setCompiled] = useState(false);
+  const [badRequest, setBadRequest] = useState(false);
+  const [wrongAnswer, setWrongAnswer] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
-    setOpen(false);
+    setCompiled(false);
+    setBadRequest(false);
+    setWrongAnswer(false);
   };
-  const { code, setOutput, setError, isSubmitting, setIsSubmitting } =
-    useEditor() || {};
 
   const question = props.question;
   const noofTestCases = question.testcases;
-  // Submit code to server
 
   const [responseData, setResponseData] = useState(null);
   console.log("response data", responseData);
@@ -37,6 +39,8 @@ const CompileButton = (props) => {
   const sampleOutput = question.sampleoutput;
 
   const handleRun = async () => {
+    setOutput("")
+    setError("");
     setIsCompiling(true);
     const data = qs.stringify({
       code: code,
@@ -51,29 +55,32 @@ const CompileButton = (props) => {
       },
       data: data,
     };
-
+    
     try {
       const response = await axios(config);
       setResponseData(response.data);
-      console.log("data", response.data);
       const actualOutput = response.data.output;
       const error = response.data.error;
       if (error !== "") {
         console.log("error", error);
         setError(error);
-      } else {
-        console.log("actual output", actualOutput);
-        console.log(sampleOutput);
-        setOpen(true);
+      } else if ( actualOutput === sampleOutput){
+        setCompiled(true)
+      }
+       else if ( actualOutput !== sampleOutput) {
+        setWrongAnswer(true);
       }
     } catch (err) {
-      console.error(err);
+      console.error(err.code);
+      setBadRequest(true);
     }
     setIsCompiling(false);
   };
 
   const handleSubmission = async () => {
     setIsSubmitting(true);
+    setOutput("")
+    setError("");
     let noofTestCasesPassed = 0;
     for (let x in noofTestCases) {
       const testcaseInput = noofTestCases[x].input;
@@ -115,18 +122,35 @@ const CompileButton = (props) => {
       }
     }
     const output = [noofTestCasesPassed, noofTestCases.length];
+    setSubmitted(true);
     setOutput(output);
     setIsSubmitting(false);
   };
 
-  const message = () => {
+  const badRequestMessage = () => {
     return (
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={badRequest || wrongAnswer} onClose={handleClose}>
+        <Stack spacing={2} sx={{ width: "100%"}}>
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            sx={{ width: "100%", fontSize: 30 }}
+          >
+            {badRequest ? "Bad Request" : "Wrong Answer"}
+          </Alert>
+      </Stack>
+      </Dialog>
+    )
+  }
+
+  const compiledSuccessfully = () => {
+    return (
+      <Dialog open={compiled} onClose={handleClose}>
         <Stack spacing={2} sx={{ width: "100%" }}>
           <Alert
             onClose={handleClose}
             severity="success"
-            sx={{ width: "100%" }}
+            sx={{ width: "100%", fontSize: 30 }}
           >
             Code Compiled Successfully <br/>
             Submit your code to get Grade
@@ -175,7 +199,9 @@ const CompileButton = (props) => {
         </Button>
       </div>
     </section>
-    {open && (message())}
+    {compiled && (compiledSuccessfully())}
+    {(badRequest) && (badRequestMessage())}
+    {wrongAnswer && (badRequestMessage())}
     </>
   );
 };

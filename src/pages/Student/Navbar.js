@@ -7,17 +7,24 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 import { NavLink } from "react-router-dom";
+import { useEditor } from "../../context/AppContext";
 
-const pages = ["Home", "Dashboard", "Stats"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  { name: "Home", path: "/" },
+  { name: "Dashboard", path: "/dashboard"}
+]
+const settings = [
+  { name: "Profile", path: "/profile" },
+  { name: "Logout", path: "/" },
+];
 
 const Navbar = () => {
+  const { jntu } = useEditor() || {};
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -92,13 +99,13 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, index) => (
+                <MenuItem key={index} onClick={handleCloseNavMenu}>
                   <NavLink
-                    to={`/s/${page.toLowerCase()}`}
+                    to={`/s${page.path}`}
                     onClick={clicked}
                   >
-                  <Typography textAlign="center">{page}</Typography>
+                  <Typography textAlign="center">{page.name}</Typography>
                   </NavLink>
                 </MenuItem>
               ))}
@@ -123,16 +130,16 @@ const Navbar = () => {
             <img src={GMRIT} alt="GMRIT" width={120} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
+            {pages.map((page, index) => (
               <NavLink
-                to={`/s/${page.toLowerCase()}`}
+                to={`/s${page.path}`}
               >
                 <Button
-                key={page}
+                key={index}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.name}
               </Button>
               </NavLink>
             ))}
@@ -140,9 +147,10 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton>
+              </IconButton> */}
+              <Typography onClick={handleOpenUserMenu}>{jntu}</Typography>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
@@ -160,12 +168,12 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              {settings.map((setting, index) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   <NavLink
-                    to={`/s/${setting.toLowerCase()}`} 
+                    to={`/s${setting.path}`} 
                   >
-                    <Typography textAlign="center">{setting}</Typography>
+                    <Typography textAlign="center">{setting.name}</Typography>
                   </NavLink>
                 </MenuItem>
               ))}

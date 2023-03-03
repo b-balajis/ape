@@ -16,10 +16,17 @@ export const AppProvider = ({ children }) => {
   const [output, setOutput] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
 
   const [headTags, setHeadTags] = useState("");
   const [cssFramework, setCssFramework] = useState("none");
   const [error, setError] = useState("");
+
+  const [jntu, setJntu] = useState("");
+  const [dept, setDept] = useState("");
+  const [batch, setBatch] = useState("");
+  const [sem, setSem] = useState("");
+  const [usetType, setUserType] = useState("");
 
   return (
     <AppContext.Provider
@@ -52,6 +59,18 @@ export const AppProvider = ({ children }) => {
         setCssFramework,
         error,
         setError,
+        submitted,
+        setSubmitted,
+        jntu,
+        setJntu,
+        dept,
+        setDept,
+        batch,
+        setBatch,
+        sem,
+        setSem,
+        usetType,
+        setUserType,
       }}
     >
       {children}

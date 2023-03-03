@@ -1,105 +1,74 @@
-// import { useEffect } from "react";
-import Python from "../../assets/img/python.jpg";
-import Java from "../../assets/img/Java.jpg";
-import CPP from "../../assets/img/cpp.jpg";
-import { NavLink, useLocation } from "react-router-dom";
-import { renderPresentSem } from "../../api/AppFunctions";
-import Apicall from "../../api/ApiCall";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { NavLink } from "react-router-dom";
+import { renderPresentSem, renderSubjects } from "../../api/AppFunctions";
+import Loader from "../../components/Loader";
+import { useEffect, useState } from "react";
+import { useEditor } from "../../context/AppContext";
 
 const Subjects = () => {
-  // const { sendRequestforSub, status, data: loadedData, error } = useHttp( renderPresentSem,
-  //   true
-  // )
+  const { batch, dept, setSem } = useEditor() || {};
+  const [subjectDetails, setSubjectDetails] = useState("");
+  const [loading, setLoading] = useState(true);
 
-  // const { sendRequest, status, data: loadedData, error } = useHttp(renderPresentSem, renderSubjects, true);
-
-  const data = JSON.parse(localStorage.getItem("userdata"));
-  const dept = data.dept;
-  // const jntu = data.jntu;
-  // const batch = data.year;
-
-  useEffect(() => (
-    // handleapicall()
-    <Apicall payload={dept} api={renderPresentSem} />
-  ), [])
-
-  const handleapicall = () => {
-    console.log("calling");
-    // return <Apicall payload={dept} api={renderPresentSem} />;
+  const findsem = (currentsem) => {
+    for (const key in currentsem) {
+      if (Object.hasOwnProperty.call(currentsem, key)) {
+        const element = currentsem[key].batch;
+        if (element === batch) {
+          const sem = currentsem[key].sem;
+          return sem;
+        }
+      }
+    }
   };
 
-  const {data: redux} = useSelector((state) => state.appSlice);
-  // console.log(redux, "--------");
-
-  // const renderingSubjects = (sem) => {
-  //   const payload = [dept, sem];
-  //   console.log(payload);
-  //   sendRequest(payload)
-  //   console.log(error);
-  // }
-
-  // useEffect(() => {
-  //   sendRequest(dept)
-  // }, [sendRequest, dept])
-
-  // for (const key in loadedData) {
-  //   if (Object.hasOwnProperty.call(loadedData, key)) {
-  //     const batchFromData = loadedData[key].batch;
-  //     if (batchFromData === batch){
-  //       console.log(loadedData[key].sem);
-  //       renderingSubjects(loadedData[key].sem);
-  //     }
-
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   const payload = [dept, batch]
-  //   sendRequest(payload);
-  // }, [sendRequest, dept, batch]);
-
-  // const { type } = useParams();
-
-  const location = useLocation();
-  console.log("subjects", location);
-
-  const SubjectDetails = [
-    {
-      id: 1,
-      name: "Python",
-      image: Python,
-    },
-    {
-      id: 2,
-      name: "Java",
-      image: Java,
-    },
-    {
-      id: 3,
-      name: "C++",
-      image: CPP,
-    },
-    {
-      id: 4,
-      name: "C",
-      image: CPP,
-    },
-  ];
+  useEffect(() => {
+    async function fetchData() {
+      const presentSem = await renderPresentSem(dept);
+      const sem = findsem(presentSem);
+      setSem(sem);
+      const payload = [dept, sem];
+      const subjects = await renderSubjects(payload);
+      setSubjectDetails(subjects);
+    }
+    fetchData();
+    setLoading(false);
+  }, []);
 
   return (
     <>
-      {/* {handleapicall()} */}
+      {loading && <Loader />}
       <div className="mt-8">
-        <div className="flex items-center justify-center">
-          {SubjectDetails?.map((subject) => (
-            <div className="flex flex-wrap text-center mr-4">
-              <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
-                <NavLink
-                  to={`${subject.name.toLowerCase()}`}
-                  key={subject.name}
-                  state={{
+        {subjectDetails && (
+          <div className="flex items-center justify-center">
+            {subjectDetails?.map((subject) => (
+              <div className="flex flex-wrap text-center mr-4">
+                <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
+                  <NavLink
+                    to={`${subject.toLowerCase()}`}
+                    key={subject}
+                    state={{
+                      subjectName: subject,
+                    }}
+                  >
+                    <div className="bg-blue-400 w-48 h-48">
+                      <p className="text-black text-3xl uppercase">{subject}</p>
+                    </div>
+                  </NavLink>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+        {/* <div className="flex items-center justify-center">
+        {subjectDetails?.map((subject) => (
+          <div className="flex flex-wrap text-center mr-4">
+            <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
+              <NavLink
+                to={`${subject.name.toLowerCase()}`}
+                key={subject.name}
+                state={
+                  {
                     subjectName: subject.name,
                   }}
                 >
@@ -111,8 +80,9 @@ const Subjects = () => {
                 </NavLink>
               </div>
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
+      </div> */}
         {/* {loadedData?.map((subject) => (
           <p>{subject}</p>
         ))} */}
