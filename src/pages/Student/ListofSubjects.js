@@ -70,15 +70,15 @@ const Subjects = () => {
                 state={
                   {
                     subjectName: subject.name,
-                  }
-                }
-              >
-                <img
-                  src={subject.image}
-                  alt={subject.name}
-                  className="rounded-xl h-40 w-64"
-                />
-              </NavLink>
+                  }}
+                >
+                  <img
+                    src={subject.image}
+                    alt={subject.name}
+                    className="rounded-xl h-40 w-64"
+                  />
+                </NavLink>
+              </div>
             </div>
           </div>
         ))}

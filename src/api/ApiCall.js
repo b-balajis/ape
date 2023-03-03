@@ -19,4 +19,17 @@ const Apicalling = (props) => {
     props.handleReturn("hi")
 }
 
-export default Apicalling;
+//     const Output = [status, loadedData, error];
+//      let cout = 0
+//     if (status === "completed"){
+//         console.log("yes");
+//         cout = cout + 1;
+//         console.log(cout);
+//         dispatch(appactions.apiresponse(Output))
+//     }
+
+//     console.log(Output);
+//     // return status;
+// }
+
+// export default Apicalling;
