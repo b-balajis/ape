@@ -19,13 +19,10 @@ import AddSubject from "./pages/Admin/AddSubject";
 import Home from "./page/Home";
 import AddQuestion from "./pages/Faculty/AddQuestion";
 import Management from "./pages/Admin/Management";
-import { Provider } from "react-redux";
-import store from "./store"
 
 function App() {
   return (
     <>
-    <Provider store={store()}>
       <AppProvider>
         <main>
           <Routes>
@@ -55,7 +52,6 @@ function App() {
           </Routes>
         </main>
       </AppProvider>
-      </Provider>
     </>
   );
 }

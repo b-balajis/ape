@@ -164,7 +164,7 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting, index) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
                   <NavLink to={`/s${setting.path}`}>
                     <Typography textAlign="center">{setting.name}</Typography>
                   </NavLink>

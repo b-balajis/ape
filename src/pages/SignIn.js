@@ -27,6 +27,8 @@ import { auth } from "../firebase";
 import Loader from "../components/Loader";
 import { signin } from "../api/AppFunctions";
 import { useNavigate } from "react-router-dom";
+import * as signinAction from "../store/modules/app/slices/app.slice";
+import { useDispatch } from "react-redux";
 
 const theme = createTheme();
 const SignIn = () => {
@@ -47,12 +49,14 @@ const SignIn = () => {
   };
 
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // api call
   const fetchuserdetails = (userId) => {
     const data = [usertype, userId];
     async function getUserData() {
       const response = await signin(data);
+      dispatch(signinAction.apiresponse(response));
       setJntu(response.jntu);
       setDept(response.dept);
       setBatch(response.year);

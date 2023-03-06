@@ -1,4 +1,8 @@
-import appSlice from "./modules/app/slices/app.slice";
 import { combineReducers } from "@reduxjs/toolkit";
-const rootReducer = combineReducers({ appSlice });
+import appSlice from "./modules/app/slices/app.slice";
+
+const rootReducer = combineReducers({
+  data: appSlice.reducer,
+});
+
 export default rootReducer;
