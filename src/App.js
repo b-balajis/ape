@@ -26,24 +26,18 @@ function App() {
       <AppProvider>
         <main>
           <Routes>
-            <Route path="/" element={<Navigate to="/signin" />} />
             <Route path="/signin" element={<SignIn />} />
-          </Routes>
-          <Routes>
+            <Route path="/*" element={<Navigate to="/signin" />} />
             <Route path="/a" element={<AdminHome />} />
             <Route path="/a/dashboard" element={<AdminDashboard />} />
             <Route path="/a/addstudent" element={<AddStudent />} />
             <Route path="/a/addfaculty" element={<AddFaculty />} />
             <Route path="/a/addsubject" element={<AddSubject />} />
             <Route path="/a/manage" element={<Management />} />
-          </Routes>
-          <Routes>
             <Route path="/f" element={<FacultyHome />} />
             <Route path="/f/:subjectName" element={<Subject />} />
             <Route path="/f/dashboard" element={<FacultyDashboard />} />
             <Route path="/f/addquestion" element={<AddQuestion />} />
-          </Routes>
-          <Routes>
             <Route path="/s" element={<StudentHome />} />
             <Route path="/s/profile" element={<Profile />} />
             <Route path="/s/:subjectName" element={<StudentSubject />} />
