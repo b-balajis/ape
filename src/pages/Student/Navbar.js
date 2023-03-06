@@ -7,7 +7,6 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
@@ -128,15 +127,11 @@ const Navbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page, index) => (
-              <NavLink to={`/s${page.path}`}>
-                <Button
-                  key={index}
-                  onClick={handleCloseNavMenu}
-                  sx={{ my: 2, color: "white", display: "block" }}
-                >
-                  {page.name}
-                </Button>
-              </NavLink>
+              <MenuItem key={index} onClick={handleCloseNavMenu}>
+                <NavLink to={`/s${page.path}`} onClick={clicked}>
+                  <Typography textAlign="center">{page.name}</Typography>
+                </NavLink>
+              </MenuItem>
             ))}
           </Box>
 
@@ -164,7 +159,7 @@ const Navbar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting, index) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
                   <NavLink to={`/s${setting.path}`}>
                     <Typography textAlign="center">{setting.name}</Typography>
                   </NavLink>

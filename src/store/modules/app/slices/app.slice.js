@@ -1,21 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    data: null,
-    loading: false,
-    error: false
-  };
+  data: null,
+  loading: false,
+  error: false,
+};
 
-  const appslice = createSlice({
-    name: "app",
-    initialState,
-    reducers: {
-        apiresponse: (state, action) => {
-            console.log(action.payload);
-            state.data = action.payload;
-        }
+const appSlice = createSlice({
+  name: "app",
+  initialState,
+  reducers: {
+    apiresponse: (state, action) => {
+      state.data = action.payload;
+      state.loading = false;
+      state.error = false;
     },
-  });
+  },
+});
 
-export const {apiresponse} = appslice.actions;
-export default appslice.reducer;
+export const { apiresponse } = appSlice.actions;
+export default appSlice;
