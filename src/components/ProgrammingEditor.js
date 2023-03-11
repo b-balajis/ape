@@ -4,8 +4,6 @@ import CompilerPage from "./CompilerPage";
 import Editor from "./Editor";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { fetchQuestion } from "../api/AppFunctions";
-import { marksAllotment } from "../api/AppFunctions";
 
 const ProgrammingEditor = () => {
   const { code, setCode, output, error } = useEditor() || {};
@@ -36,14 +34,6 @@ const ProgrammingEditor = () => {
     };
   }, []);
 
-  useEffect(() => {
-    async function getQuestion() {
-      const question = await fetchQuestion(payload);
-      setQuestion(question);
-    }
-    getQuestion();
-  }, []);
-
   const handleMarksAllotment = () => {
     const result = (output[0] / output[1]) * 15;
     const setResult = {
@@ -51,8 +41,6 @@ const ProgrammingEditor = () => {
       marks: result,
     };
     const resultPayload = [dept, sem, sub, jntu, questionNum, setResult];
-    const marks = marksAllotment(resultPayload);
-    console.log(marks);
     if (output[0] === output[1]) {
       return (
         <div className="flex items-center justify-center w-full h-12 bg-green-500">

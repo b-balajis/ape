@@ -11,33 +11,19 @@ import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
-import { renderQuestions, fetchStudentDashboard } from "../../api/AppFunctions";
 
 const StudentDashboard = () => {
   const [questions, setQuestions] = useState("");
   const [marks, setMarks] = useState("");
 
   const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("userdata"));
+  const data = JSON.parse(localStorage.getItem("user"));
   const jntu = data.jntu;
   const dept = data.dept;
   const sub = "python";
 
   const Qpayload = [dept, sem, sub];
   const payload = [dept, sem, sub, jntu];
-  useEffect(() => {
-    async function fetchQuestionsList() {
-      const questions = await renderQuestions(Qpayload);
-      setQuestions(questions);
-    }
-    fetchQuestionsList();
-
-    async function fetchQuestionsMarks() {
-      const marks = await fetchStudentDashboard(payload);
-      setMarks(marks);
-    }
-    fetchQuestionsMarks();
-  }, []);
 
   useEffect(() => {});
   console.log(questions);

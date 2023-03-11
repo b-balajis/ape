@@ -9,7 +9,19 @@ import Select from "@mui/material/Select";
 import Navbar from "./Navbar";
 import Button from "@mui/material/Button";
 import SemesterData from "./SemesterData";
-import { renderAllPresentSemesters } from "../../api/AppFunctions";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import dayjs from "dayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import AccessConfirmation from "./AccessConfirmation";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -30,6 +42,11 @@ const Mangement = () => {
   const [editThirdYear, setEditThirdYear] = useState(false);
   const [editFourthYear, setEditFourthYear] = useState(false);
   const [semesterPreview, setSemesterPreview] = useState("");
+  const [secondYearBatch, setSecondYearBatch] = useState(dayjs("2022-04-07"));
+  const [thirdYearBatch, setThirdYearBatch] = useState(dayjs("2022-04-07"));
+  const [fourthYearBatch, setFourthYearBatch] = useState(dayjs("2022-04-07"));
+  const [accessConfirmationDialog, setAccessConfirmationDialog] =
+    useState(false);
 
   const presentSems = {
     secondYear: "3rd Sem",
@@ -37,24 +54,8 @@ const Mangement = () => {
     fourthYear: "7th Sem",
   };
 
-  const data = JSON.parse(localStorage.getItem("userdata"));
-  const payload = [data.dept];
-
-  useEffect(() => {
-    const fetchSemesters = async () => {
-      const semesters = await renderAllPresentSemesters(payload);
-      setSecondYear(semesters["2ndyear"].sem);
-      setThirdYear(semesters["3rdyear"].sem);
-      setFourthYear(semesters["4thyear"].sem);
-      // setThirdYear(semesters.thirdYear);
-      // setFourthYear(semesters.fourthYear);
-      // const two = semesters["2ndyear"].sem
-      // console.log(two);
-      // setSecondYear(two);
-    };
-    fetchSemesters();
-  }, []);
-  console.log(secondyear, "jhhhhhh");
+  const data = JSON.parse(localStorage.getItem("user"));
+  const dept = [data.dept];
 
   const handleChangeSecondYear = (event) => {
     const {
@@ -64,11 +65,8 @@ const Mangement = () => {
   };
 
   const handleSecondYearEdit = () => {
-    if (editSecondYear) {
-      setEditSecondYear(false);
-    } else {
-      setEditSecondYear(true);
-    }
+    if (editSecondYear) setEditSecondYear(false);
+    else setEditSecondYear(true);
   };
 
   const handleChangeThirdYear = (event) => {
@@ -78,11 +76,8 @@ const Mangement = () => {
     setThirdYear(typeof value === "string" ? value.split(",") : value);
   };
   const handleThirdYearEdit = () => {
-    if (editThirdYear) {
-      setEditThirdYear(false);
-    } else {
-      setEditThirdYear(true);
-    }
+    if (editThirdYear) setEditThirdYear(false);
+    else setEditThirdYear(true);
   };
 
   const handleChangeFourthYear = (event) => {
@@ -92,23 +87,66 @@ const Mangement = () => {
     setFourthYear(typeof value === "string" ? value.split(",") : value);
   };
   const handleFourthYearEdit = () => {
-    if (editFourthYear) {
-      setEditFourthYear(false);
-    } else {
-      setEditFourthYear(true);
+    if (!editFourthYear) return setEditFourthYear(true);
+    else setEditFourthYear(true);
+    setAccessConfirmationDialog(true);
+  };
+
+  const handleUpdateSem = async () => {
+    console.log("update");
+    const payload = [ dept, "4thyear", {
+      sem: "3rd",
+      batch: "fourthYearBatch"
     }
+    ];
+    handleClose()
+  };
+
+  const handleClose = () => {
+    setAccessConfirmationDialog(false);
+    setEditFourthYear(false);
   };
 
   const handleSemesterView = async (sem) => {
     setSemesterPreview(sem);
   };
-
   return (
     <>
       <Navbar />
+      {accessConfirmationDialog && (
+        <div>
+          <Dialog
+            open={accessConfirmationDialog}
+            onClose={handleClose}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+            fullWidth
+            maxWidth="xs"
+          >
+            <DialogTitle id="alert-dialog-title">
+              {"Confirm with Your Password"}
+            </DialogTitle>
+            <div className="w-2/3 mx-auto">
+              <TextField
+                label="Password"
+                type="password"
+                autoComplete="current-password"
+                variant="outlined"
+                fullWidth
+              />
+            </div>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button onClick={handleUpdateSem} autoFocus>
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
+      )}
       <div className="flex place-items-center justify-center v-screen mt-2">
         <div>
-          <FormControl sx={{ m: 1, width: 300 }}>
+          <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">2nd Year</InputLabel>
             <Select
               labelId="demo-multiple-name-label"
@@ -126,6 +164,21 @@ const Mangement = () => {
                 4th Sem
               </MenuItem>
             </Select>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack spacing={3}>
+                <DatePicker
+                  views={["year"]}
+                  value={secondYearBatch}
+                  disabled={editSecondYear ? false : true}
+                  onChange={(newValue) => {
+                    setSecondYearBatch(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} helperText={null} />
+                  )}
+                />
+              </Stack>
+            </LocalizationProvider>
             <div className="flex mt-2 gap-3">
               <Button
                 variant="contained"
@@ -145,7 +198,7 @@ const Mangement = () => {
           </FormControl>
         </div>
         <div>
-          <FormControl sx={{ m: 1, width: 300 }}>
+          <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">3rd Year</InputLabel>
             <Select
               labelId="demo-multiple-name-label"
@@ -163,6 +216,21 @@ const Mangement = () => {
                 6th Sem
               </MenuItem>
             </Select>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack spacing={3}>
+                <DatePicker
+                  views={["year"]}
+                  value={thirdYearBatch}
+                  disabled={editThirdYear ? false : true}
+                  onChange={(newValue) => {
+                    setThirdYearBatch(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} helperText={null} />
+                  )}
+                />
+              </Stack>
+            </LocalizationProvider>
             <div className="flex mt-2 gap-3">
               <Button
                 variant="contained"
@@ -182,7 +250,7 @@ const Mangement = () => {
           </FormControl>
         </div>
         <div>
-          <FormControl sx={{ m: 1, width: 300 }}>
+          <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">4th Year</InputLabel>
             <Select
               labelId="demo-multiple-name-label"
@@ -200,6 +268,21 @@ const Mangement = () => {
                 8th Sem
               </MenuItem>
             </Select>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack spacing={3}>
+                <DatePicker
+                  views={["year"]}
+                  value={fourthYearBatch}
+                  disabled={editFourthYear ? false : true}
+                  onChange={(newValue) => {
+                    setFourthYearBatch(newValue);
+                  }}
+                  renderInput={(params) => (
+                    <TextField {...params} helperText={null} />
+                  )}
+                />
+              </Stack>
+            </LocalizationProvider>
             <div className="flex mt-2 gap-3">
               <Button
                 variant="contained"

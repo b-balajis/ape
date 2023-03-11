@@ -1,14 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { NavLink } from "react-router-dom";
-import { renderPresentSem, renderSubjects } from "../../api/AppFunctions";
 import Loader from "../../components/Loader";
 import { useEffect, useState } from "react";
-import { useEditor } from "../../context/AppContext";
 
 const Subjects = () => {
-  const { batch, dept, setSem } = useEditor() || {};
   const [subjectDetails, setSubjectDetails] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const data = JSON.parse(localStorage.getItem("user"));
+  const dept = data.dept;
+  const batch = data.year;
 
   const findsem = (currentsem) => {
     for (const key in currentsem) {
@@ -22,22 +23,13 @@ const Subjects = () => {
     }
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      const presentSem = await renderPresentSem(dept);
-      const sem = findsem(presentSem);
-      setSem(sem);
-      const payload = [dept, sem];
-      const subjects = await renderSubjects(payload);
-      setSubjectDetails(subjects);
-    }
-    fetchData();
-    setLoading(false);
-  }, []);
-
   return (
     <>
-      {loading && <Loader />}
+      {isLoading && (
+        <div className="flex justify-center place-items-center v-screen h-screen">
+          <Loader />
+        </div>
+      )}
       <div className="mt-8">
         {subjectDetails && (
           <div className="flex items-center justify-center">
