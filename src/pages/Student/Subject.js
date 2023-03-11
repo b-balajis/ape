@@ -8,29 +8,22 @@ import { Button, CardActionArea, CardActions } from "@mui/material";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
-import { renderQuestions } from "../../api/AppFunctions";
+import Loader from "../../components/Loader";
 
 const Subject = () => {
   const [questions, setQuestions] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
 
   const link = useParams();
 
   const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("userdata"));
+  const data = JSON.parse(localStorage.getItem("user"));
   const dept = data.dept;
   const sub = link.subjectName;
 
   const payload = [dept, sem, sub];
-  useEffect(() => {
-    async function fetchQuestions() {
-      const questions = await renderQuestions(payload);
-      setQuestions(questions);
-    }
-    fetchQuestions();
-  }, []);
 
-  console.log(questions);
 
   let subName = location.state.subjectName;
   // const subjectQuestions = Subjects[subName];
@@ -42,6 +35,11 @@ const Subject = () => {
   return (
     <>
       <Navbar />
+      {isLoading && (
+        <div className="flex justify-center place-items-center v-screen h-screen">
+          <Loader />
+        </div>
+      )}
       {questions && (
         <div className="flex flex-col items-center justify-center mt-8">
           {questions.map((questions) => {

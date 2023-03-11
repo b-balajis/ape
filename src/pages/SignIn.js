@@ -10,7 +10,6 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useEditor } from "../context/AppContext";
 import Vector from "../assets/img/se-vector.png";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -22,17 +21,13 @@ import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase";
 import Loader from "../components/Loader";
-import { signin } from "../api/AppFunctions";
 import { useNavigate } from "react-router-dom";
-import * as signinAction from "../store/modules/app/slices/app.slice";
-import { useDispatch } from "react-redux";
+// import * as signinAction from "../store/modules/app/slices/app.slice";
+// import { useDispatch } from "react-redux";
 
 const theme = createTheme();
 const SignIn = () => {
-  const { setJntu, setDept, setBatch, setUserType } = useEditor() || {};
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [usertype, setUsersType] = useState("");
@@ -49,24 +44,11 @@ const SignIn = () => {
   };
 
   const Navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   // api call
-  const fetchuserdetails = (userId) => {
-    const data = [usertype, userId];
-    async function getUserData() {
-      const response = await signin(data);
-      dispatch(signinAction.apiresponse(response));
-      setJntu(response.jntu);
-      setDept(response.dept);
-      setBatch(response.year);
-      setUserType(usertype);
-      renderUSerDashboard(usertype);
-    }
-    getUserData();
-  };
 
-  const renderUSerDashboard = (usertype) => {
+  const handleSignIn = (usertype) => {
     if (usertype === "student") {
       Navigate(`/s`);
     } else if (usertype === "faculty") {
@@ -76,21 +58,7 @@ const SignIn = () => {
     }
   };
 
-  const handleSignIn = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        const userId = user.uid;
-        fetchuserdetails(userId);
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorCode, errorMessage);
-      });
-  };
+  // firebase mail auth signin
 
   const emailvalidations = {
     required: "Email is required",
@@ -209,8 +177,8 @@ const SignIn = () => {
                   onChange={handleChange}
                 >
                   <MenuItem value="student">Student</MenuItem>
-                  <MenuItem value="Faculty">Faculty</MenuItem>
-                  <MenuItem value="Admin">Admin</MenuItem>
+                  <MenuItem value="faculty">Faculty</MenuItem>
+                  <MenuItem value="admin">Admin</MenuItem>
                 </Select>
               </FormControl>
               <FormControlLabel
