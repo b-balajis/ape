@@ -1,12 +1,66 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import ListofSubjects from "./ListofSubjects";
 import Navbar from "./Navbar";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { apiresponse } from "../../store/modules/app/slices/app.slice";
+import ProfileCard from "./ProfileCard"
 
 const Student = () => {
+  const dispatch = useDispatch();
+  const email = localStorage.getItem("email");
+  useEffect(() => {
+    async function fetchStudentData() {
+      try {
+        const response = await fetch(`/fetchStudent/${email}`);
+        const studentData = await response.json();
+        if (!response.ok) {
+          throw new Error(studentData.message);
+        }
+        dispatch(apiresponse(studentData));
+        const { batch, jntu } = studentData;
+        localStorage.setItem("jntu", jntu);
+        fetchPresentSemData(batch);
+        return studentData;
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    fetchStudentData();
+  }, []);
+
+  const fetchPresentSemData = async (batch) => {
+    try {
+      const presentSemData = await fetch(`/runningSems`);
+      const semdata = await presentSemData.json();
+      if (!presentSemData.ok) {
+        throw new Error(semdata.message);
+      }
+      const currentsem = semdata[0];
+      for (const key in currentsem) {
+        if (Object.hasOwnProperty.call(currentsem, key)) {
+          const element = currentsem[key].batch;
+          if (element === batch) {
+            const sem = currentsem[key].sem;
+            localStorage.setItem("sem", sem);
+          }
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  };
+
   return (
     <>
       <Navbar />
+      <div className="flex justify-around mt-[10vh]">
+      <ProfileCard />
       <ListofSubjects />
+      </div>
     </>
   );
 };

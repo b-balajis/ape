@@ -33,7 +33,9 @@ const CompileButton = (props) => {
   const noofTestCases = question.testcases;
 
   const [responseData, setResponseData] = useState(null);
-  console.log("response data", responseData);
+  if(responseData){
+    //
+  }
   const [isCompiling, setIsCompiling] = useState(false);
 
   const sampleInput = question.sampleinput;
@@ -103,7 +105,6 @@ const CompileButton = (props) => {
       try {
         const response = await axios(config);
         setResponseData(response.data);
-        console.log("data", response.data);
         const actualOutput = response.data.output;
         const error = response.data.error;
         if (error !== "") {

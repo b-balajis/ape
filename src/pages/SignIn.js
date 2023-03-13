@@ -46,9 +46,7 @@ const SignIn = () => {
   const Navigate = useNavigate();
   // const dispatch = useDispatch();
 
-  // api call
-
-  const handleSignIn = (usertype) => {
+  const handleRouteRedirection = () => {
     if (usertype === "student") {
       Navigate(`/s`);
     } else if (usertype === "faculty") {
@@ -56,6 +54,36 @@ const SignIn = () => {
     } else if (usertype === "admin") {
       Navigate(`/a`);
     }
+  }
+
+  // api call
+  const authenticateUser = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password, usertype }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message);
+      }
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("email", email);
+      handleRouteRedirection();
+      // Redirect to another page
+    } catch (error) {
+      // setErrorMessage(error.message);
+    }
+    setIsLoading(false);
+  }
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    console.log(usertype, email, password, "data");
+    authenticateUser();
   };
 
   // firebase mail auth signin
@@ -114,9 +142,9 @@ const SignIn = () => {
             </Typography>
             <Box
               component="form"
-              noValidate
               onSubmit={handleSignIn}
               sx={{ mt: 1 }}
+              method="POST"
             >
               <TextField
                 margin="normal"
@@ -129,7 +157,7 @@ const SignIn = () => {
                 autoFocus
                 {...register("email", {
                   onChange: (e) => setEmail(e.target.value),
-                  emailvalidations,
+                  ...emailvalidations,
                 })}
               />
               {errors.email && (
@@ -156,7 +184,7 @@ const SignIn = () => {
                 }}
                 {...register("password", {
                   onChange: (e) => setPassword(e.target.value),
-                  passwordValidations,
+                  ...passwordValidations,
                 })}
               />
               {errors.password && (

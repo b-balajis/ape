@@ -11,13 +11,20 @@ const ProgrammingEditor = () => {
 
   const link = useParams();
   const questionNum = link.question - 1;
-  const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("userdata"));
-  const jntu = data.jntu;
-  const dept = data.dept;
-  const sub = link.subjectName;
-  const payload = [dept, sem, sub, questionNum];
-  const subjectName = sub;
+  const presentSem = localStorage.getItem("sem");
+  const subjectName = link.subjectName;
+
+  useEffect(() => {
+    async function fetchPresentSemData() {
+      const response = await fetch(
+        `/${presentSem}/${subjectName}/${questionNum}/fetchQuestion`
+      );
+      const data = await response.json();
+      console.log(data);
+      setQuestion(data);
+    }
+    fetchPresentSemData();
+  }, [questionNum])
 
   useEffect(() => {
     function disableRightClick(e) {
@@ -36,11 +43,13 @@ const ProgrammingEditor = () => {
 
   const handleMarksAllotment = () => {
     const result = (output[0] / output[1]) * 15;
-    const setResult = {
-      id: questionNum,
-      marks: result,
-    };
-    const resultPayload = [dept, sem, sub, jntu, questionNum, setResult];
+    console.log(result, "result");
+    
+    // const setResult = {
+    //   id: questionNum,
+    //   marks: result,
+    // };
+    // const resultPayload = [dept, sem, sub, jntu, questionNum, setResult];
     if (output[0] === output[1]) {
       return (
         <div className="flex items-center justify-center w-full h-12 bg-green-500">

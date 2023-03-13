@@ -17,13 +17,27 @@ const StudentDashboard = () => {
   const [marks, setMarks] = useState("");
 
   const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("user"));
-  const jntu = data.jntu;
-  const dept = data.dept;
-  const sub = "python";
+  const subject = "python";
+  const jntu = "19341A1217";
 
-  const Qpayload = [dept, sem, sub];
-  const payload = [dept, sem, sub, jntu];
+  useEffect(() => {
+    async function fetchQuestions() {
+      const response = await fetch(`/${sem}/${subject}/fetchQuestions`);
+      const data = await response.json();
+      setQuestions(data);
+    }
+    fetchQuestions();
+  }, []);
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      const response = await fetch(`/studentDashboard?sem=${sem}&subject=${subject}&jntu=${jntu}`);
+        const data = await response.json();
+      setMarks(data);
+      console.log(data);
+    }
+    fetchQuestions();
+  }, [])
 
   useEffect(() => {});
   console.log(questions);
@@ -56,7 +70,7 @@ const StudentDashboard = () => {
             <div className="flex w-full">
               {questions.length !== 0 && (
                 <div className="w-9/12">
-                  {questions.map((row) => (
+                  {Object.values(questions).map((row) => (
                     <TableRow>
                       <TableCell>{row.qno}</TableCell>
                       <TableCell className="ml-8">{row.question}</TableCell>
@@ -67,7 +81,7 @@ const StudentDashboard = () => {
               <div>
                 {marks.length !== 0 && (
                   <div className="3/12">
-                    {marks.map((mark) => (
+                    {Object.values(marks).map((mark) => (
                       <TableRow>
                         <TableCell>{mark.marks}</TableCell>
                         <TableCell>{mark.grade}</TableCell>

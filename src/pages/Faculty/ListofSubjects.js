@@ -3,12 +3,15 @@ import Java from "../../assets/img/Java.jpg";
 import CPP from "../../assets/img/cpp.jpg";
 import C from "../../assets/img/c.jpg"
 import { NavLink, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 const Subjects = () => {
   // const { type } = useParams();
 
   const location = useLocation();
   console.log("subjects", location);
+
   const SubjectDetails = [
     {
       id: 1,
@@ -31,6 +34,18 @@ const Subjects = () => {
       image: C,
     }
   ];
+  // const facultyData = useSelector((state) => state.userData.userDetails);
+  const name = "Dr. P. Kanchanamala";
+  // console.log("name", facultyData.name);
+
+  useEffect(() => {
+    async function fetchData(){
+      const response = await fetch(`/${name}/facultydashboard`);
+      const data = await response.json();
+      console.log("data", data);
+    }
+    fetchData();
+  }, [])
 
   return (
     <>

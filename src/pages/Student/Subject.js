@@ -5,7 +5,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 // import Subjects from "../../data/Subjects.json";
-import { NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
@@ -13,20 +13,19 @@ import Loader from "../../components/Loader";
 const Subject = () => {
   const [questions, setQuestions] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const location = useLocation();
 
-  const link = useParams();
-
+  const subName = useParams().subjectName;
   const sem = localStorage.getItem("sem");
-  const data = JSON.parse(localStorage.getItem("user"));
-  const dept = data.dept;
-  const sub = link.subjectName;
-
-  const payload = [dept, sem, sub];
-
-
-  let subName = location.state.subjectName;
-  // const subjectQuestions = Subjects[subName];
+  useEffect(() => {
+    async function fetchQuestions() {
+      setIsLoading(true);
+      const response = await fetch(`/${sem}/${subName}/fetchQuestions`);
+      const data = await response.json();
+      setQuestions(data);
+      setIsLoading(false);
+    }
+    fetchQuestions();
+  }, []);
 
   const handleSolve = (id) => {
     console.log("Solve", id);
@@ -42,7 +41,7 @@ const Subject = () => {
       )}
       {questions && (
         <div className="flex flex-col items-center justify-center mt-8">
-          {questions.map((questions) => {
+          {Object.values(questions)?.map((question) => {
             return (
               <div className="my-2 w-9/12">
                 <Card sx={{ maxWidth: 1500 }}>
@@ -51,7 +50,7 @@ const Subject = () => {
                       <CardActionArea>
                         <CardContent>
                           <Typography gutterBottom variant="h6" component="div">
-                            {questions.qno}. {questions.question}
+                            {question.qno}. {question.question}
                           </Typography>
                         </CardContent>
                       </CardActionArea>
@@ -59,18 +58,18 @@ const Subject = () => {
                     <div>
                       <CardActions>
                         <NavLink
-                          to={`${questions.qno}`}
-                          key={questions.qno}
+                          to={`${question.qno}`}
+                          key={question.qno}
                           state={{
-                            question: questions,
+                            question: question,
                             subjectName: subName,
                           }}
                         >
                           <Button
                             variant="contained"
                             size="large"
-                            key={questions.id}
-                            onClick={() => handleSolve(questions.id)}
+                            key={question.id}
+                            onClick={() => handleSolve(question.id)}
                           >
                             Solve
                           </Button>

@@ -3,25 +3,28 @@ import { NavLink } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { useEffect, useState } from "react";
 
-const Subjects = () => {
+const ListOfSubjects = () => {
   const [subjectDetails, setSubjectDetails] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
+  // const [presentSem, setPresentSem] = useState(null);
+  // console.log(data);
 
-  const data = JSON.parse(localStorage.getItem("user"));
-  const dept = data.dept;
-  const batch = data.year;
-
-  const findsem = (currentsem) => {
-    for (const key in currentsem) {
-      if (Object.hasOwnProperty.call(currentsem, key)) {
-        const element = currentsem[key].batch;
-        if (element === batch) {
-          const sem = currentsem[key].sem;
-          return sem;
-        }
-      }
+  // const { org } = useSelector((state) => state.org.orgInfo);
+  const presentSem = localStorage.getItem("sem");
+  
+  useEffect(() => {
+    async function fetchPresentSemData() {
+      setIsLoading(true);
+      const response = await fetch(
+        `/${presentSem}/fetchpresentSemData`
+      );
+      const data = await response.json();
+      console.log(data);
+      setSubjectDetails(data);
+      setIsLoading(false);
     }
-  };
+    fetchPresentSemData();
+  }, [presentSem])
 
   return (
     <>
@@ -83,4 +86,4 @@ const Subjects = () => {
   );
 };
 
-export default Subjects;
+export default ListOfSubjects;

@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  data: null,
+  userDetails: null,
   loading: false,
   error: false,
 };
 
 const appSlice = createSlice({
-  name: "app",
+  name: "userdata",
   initialState,
   reducers: {
     apiresponse: (state, action) => {
-      state.data = action.payload;
+      state.userDetails = action.payload;
       state.loading = false;
       state.error = false;
     },
