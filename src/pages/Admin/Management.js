@@ -15,12 +15,9 @@ import TextField from "@mui/material/TextField";
 import dayjs from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import AccessConfirmation from "./AccessConfirmation";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 const ITEM_HEIGHT = 48;
@@ -48,14 +45,35 @@ const Mangement = () => {
   const [accessConfirmationDialog, setAccessConfirmationDialog] =
     useState(false);
 
+  useEffect(() => {
+    async function fetchRunningSems() {
+      try {
+        const presentSemData = await fetch(`/runningSems`);
+        const semdata = await presentSemData.json();
+        if (!presentSemData.ok) {
+          throw new Error(semdata.message);
+        }
+        setSecondYear(semdata[0].secondYear.sem);
+        setThirdYear(semdata[0].thirdYear.sem);
+        setFourthYear(semdata[0].fourthYear.sem);
+        // setSecondYearBatch(dayjs(semdata[0].secondYearBatch))
+        setSecondYearBatch(semdata[0].secondYear.batch);
+        setThirdYearBatch(semdata[0].thirdYear.batch);
+        setFourthYearBatch(semdata[0].fourthYear.batch);
+        console.log(secondYearBatch);
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    }
+    fetchRunningSems();
+  }, []);
+
   const presentSems = {
     secondYear: "3rd Sem",
     thirdYear: "5th Sem",
     fourthYear: "7th Sem",
   };
-
-  const data = JSON.parse(localStorage.getItem("user"));
-  const dept = [data.dept];
 
   const handleChangeSecondYear = (event) => {
     const {
@@ -65,8 +83,9 @@ const Mangement = () => {
   };
 
   const handleSecondYearEdit = () => {
-    if (editSecondYear) setEditSecondYear(false);
+    if (!editSecondYear) return setEditSecondYear(true);
     else setEditSecondYear(true);
+    setAccessConfirmationDialog(true);
   };
 
   const handleChangeThirdYear = (event) => {
@@ -76,8 +95,9 @@ const Mangement = () => {
     setThirdYear(typeof value === "string" ? value.split(",") : value);
   };
   const handleThirdYearEdit = () => {
-    if (editThirdYear) setEditThirdYear(false);
+    if (!editThirdYear) return setEditThirdYear(true);
     else setEditThirdYear(true);
+    setAccessConfirmationDialog(true);
   };
 
   const handleChangeFourthYear = (event) => {
@@ -94,16 +114,18 @@ const Mangement = () => {
 
   const handleUpdateSem = async () => {
     console.log("update");
-    const payload = [ dept, "4thyear", {
-      sem: "3rd",
-      batch: "fourthYearBatch"
-    }
-    ];
-    handleClose()
+    // const payload = [ dept, "4thyear", {
+    //   sem: "3rd",
+    //   batch: "fourthYearBatch"
+    // }
+    // ];
+    handleClose();
   };
 
   const handleClose = () => {
     setAccessConfirmationDialog(false);
+    setEditSecondYear(false);
+    setEditThirdYear(false);
     setEditFourthYear(false);
   };
 
@@ -157,10 +179,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editSecondYear ? false : true}
             >
-              <MenuItem key={3} value="3rdsem">
+              <MenuItem key={3} value="thirdSem">
                 3rd Sem
               </MenuItem>
-              <MenuItem key={4} value="4thsem">
+              <MenuItem key={4} value="fourthSem">
                 4th Sem
               </MenuItem>
             </Select>
@@ -209,10 +231,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editThirdYear ? false : true}
             >
-              <MenuItem key={3} value="5thsem">
+              <MenuItem key={3} value="fifthSem">
                 5th Sem
               </MenuItem>
-              <MenuItem key={4} value="6thsem">
+              <MenuItem key={4} value="sixthSem">
                 6th Sem
               </MenuItem>
             </Select>
@@ -261,10 +283,10 @@ const Mangement = () => {
               MenuProps={MenuProps}
               disabled={editFourthYear ? false : true}
             >
-              <MenuItem key={3} value="7thsem">
+              <MenuItem key={3} value="seventhSem">
                 7th Sem
               </MenuItem>
-              <MenuItem key={4} value="8thsem">
+              <MenuItem key={4} value="eighthSem">
                 8th Sem
               </MenuItem>
             </Select>

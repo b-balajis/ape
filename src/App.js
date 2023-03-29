@@ -19,6 +19,7 @@ import AddSubject from "./pages/Admin/AddSubject";
 import Home from "./page/Home";
 import AddQuestion from "./pages/Faculty/AddQuestion";
 import Management from "./pages/Admin/Management";
+import QuesionView from "./pages/Faculty/QuestionView";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/a/manage" element={<Management />} />
             <Route path="/f" element={<FacultyHome />} />
             <Route path="/f/:subjectName" element={<Subject />} />
+            <Route path="/f/:subjectName/:question" element={<QuesionView />} />
             <Route path="/f/dashboard" element={<FacultyDashboard />} />
             <Route path="/f/addquestion" element={<AddQuestion />} />
             <Route path="/s" element={<StudentHome />} />

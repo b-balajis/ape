@@ -1,84 +1,66 @@
-import Python from "../../assets/img/python.jpg";
-import Java from "../../assets/img/Java.jpg";
-import CPP from "../../assets/img/cpp.jpg";
-import C from "../../assets/img/c.jpg"
-import { NavLink, useLocation } from "react-router-dom";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { Grid, Paper, Typography, styled } from "@mui/material";
+import { NavLink } from "react-router-dom";
 
-const Subjects = () => {
-  // const { type } = useParams();
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(2),
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
+}));
 
-  const location = useLocation();
-  console.log("subjects", location);
-
-  const SubjectDetails = [
-    {
-      id: 1,
-      name: "Python",
-      image: Python,
-    },
-    {
-      id: 2,
-      name: "Java",
-      image: Java,
-    },
-    {
-      id: 3,
-      name: "C++",
-      image: CPP,
-    },
-    {
-      id: 4,
-      name: "C",
-      image: C,
-    }
-  ];
-  // const facultyData = useSelector((state) => state.userData.userDetails);
+const FacutlySubjects = () => {
+  const [facultyDashboard, setFacultyDashboard] = useState(null);
   const name = "Dr. P. Kanchanamala";
-  // console.log("name", facultyData.name);
 
   useEffect(() => {
-    async function fetchData(){
+    async function fetchData() {
       const response = await fetch(`/${name}/facultydashboard`);
       const data = await response.json();
-      console.log("data", data);
+      setFacultyDashboard(data);
     }
     fetchData();
-  }, [])
+  }, []);
+
+  if (!facultyDashboard) {
+    return <p>Loading...</p>;
+  }
+
+  const { allotment } = facultyDashboard;
 
   return (
-    <>
-      <div className="mt-8">
-      <div className="flex items-center justify-center">
-        {SubjectDetails?.map((subject) => (
-          <div className="text-center mr-4">
-            <div className="border rounded-lg transform transition duration-500 hover:scale-110">
-              <NavLink
-                to={`${subject.name.toLowerCase()}`}
-                key={subject.name}
-                state={
-                  {
-                    subjectName: subject.name,
-                  }
-                }
-              >
-                <img
-                  src={subject.image}
-                  alt={subject.name}
-                  className="h-40 w-64 rounded-xl"
-                />
-                <div className="text-center">
-                  <h1 className="text-2xl font-bold">{subject.name}</h1>
-                </div>
-              </NavLink>
-            </div>
-          </div>
-        ))}
-      </div>
-      </div>
-    </>
+    <Grid container spacing={4}>
+      {Object.entries(allotment).map(([semester, subjects]) => (
+        <Grid item xs={12} key={semester}>
+          <Typography variant="h5">
+            Semester: {semester.toLocaleUpperCase()}
+          </Typography>
+          <Grid container spacing={4}>
+            {Object.entries(subjects).map(([subject, details]) => (
+              <Grid item xs={12} md={6} lg={4} key={subject}>
+                <NavLink
+                  to={`${subject.toLowerCase()}`}
+                  key={subject}
+                  state={{
+                    subjectName: subject,
+                    sem: semester
+                  }}
+                >
+                  <StyledPaper>
+                    <Typography variant="h6">
+                      Subject Name: {subject}
+                    </Typography>
+                    <Typography>Section Name: {details.section}</Typography>
+                    <Typography>Department: {details.dept}</Typography>
+                  </StyledPaper>
+                </NavLink>
+              </Grid>
+            ))}
+          </Grid>
+        </Grid>
+      ))}
+    </Grid>
   );
 };
 
-export default Subjects;
+export default FacutlySubjects;

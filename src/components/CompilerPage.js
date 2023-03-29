@@ -19,6 +19,8 @@ const CompileButton = (props) => {
   const [compiled, setCompiled] = useState(false);
   const [badRequest, setBadRequest] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
+  const [actualOutputValue, setActualOutputValue] = useState();
+  const [sampleOutputValue, setSampleOutputValue] = useState();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -72,6 +74,8 @@ const CompileButton = (props) => {
       }
        else if ( actualOutput !== sampleOutput) {
         setWrongAnswer(true);
+        setActualOutputValue(actualOutput);
+        setSampleOutputValue(sampleOutput);
       }
     } catch (err) {
       console.error(err.code);

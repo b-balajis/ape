@@ -11,19 +11,20 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 import { NavLink } from "react-router-dom";
-import { useEditor } from "../../context/AppContext";
+// import { useEditor } from "../../context/AppContext";
+import { Avatar } from "@mui/material";
 
 const pages = [
   { name: "Home", path: "/" },
   { name: "Dashboard", path: "/dashboard" },
 ];
 const settings = [
-  { name: "Profile", path: "/profile" },
+  { name: "Profile", path: "/s/profile" },
   { name: "Logout", path: "/" },
 ];
 
 const Navbar = () => {
-  const { jntu } = useEditor() || {};
+  // const { jntu } = useEditor() || {};
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -137,10 +138,9 @@ const Navbar = () => {
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              {/* <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-              </IconButton> */}
-              <Typography onClick={handleOpenUserMenu}>{jntu}</Typography>
+              </IconButton>
             </Tooltip>
             <Menu
               sx={{ mt: "45px" }}
@@ -160,7 +160,7 @@ const Navbar = () => {
             >
               {settings.map((setting, index) => (
                 <MenuItem key={index} onClick={handleCloseUserMenu}>
-                  <NavLink to={`/s${setting.path}`}>
+                  <NavLink to={`${setting.path}`}>
                     <Typography textAlign="center">{setting.name}</Typography>
                   </NavLink>
                 </MenuItem>

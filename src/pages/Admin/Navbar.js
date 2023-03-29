@@ -36,7 +36,15 @@ const pages = [
     href: "/a/manage",
   }
 ];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = [{
+  title: "Profile",
+  href: "/a/profile",
+},
+{
+  title: "Logout",
+  href: "/",
+
+}];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -176,9 +184,11 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
+                  <NavLink to={`${setting.href}`}>
+                    <Typography textAlign="center">{setting.title}</Typography>
+                  </NavLink>
                 </MenuItem>
               ))}
             </Menu>

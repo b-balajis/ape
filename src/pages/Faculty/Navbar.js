@@ -14,8 +14,26 @@ import MenuItem from "@mui/material/MenuItem";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 import { NavLink } from "react-router-dom";
 
-const pages = ["Home", "Dashboard", "Stats"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = [
+  {
+    name: "Home",
+    path: "/",
+  },
+  {
+    name: "Dashboard",
+    path: "/dashboard",
+  },
+];
+const settings = [
+  {
+    name: "Profile",
+    path: "/f/profile",
+  },
+  {
+    name: "Logout",
+    path: "/",
+  },
+];
 
 const Navbar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -94,11 +112,8 @@ const Navbar = () => {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <NavLink
-                    to={`/f/${page.toLowerCase()}`}
-                    onClick={clicked}
-                  >
-                  <Typography textAlign="center">{page}</Typography>
+                  <NavLink to={`/f/${page.path}`} onClick={clicked}>
+                    <Typography textAlign="center">{page.name}</Typography>
                   </NavLink>
                 </MenuItem>
               ))}
@@ -124,16 +139,14 @@ const Navbar = () => {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <NavLink
-                to={`/f/${page.toLowerCase()}`}
-              >
+              <NavLink to={`/f${page.path}`}>
                 <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
+                  key={page}
+                  onClick={handleCloseNavMenu}
+                  sx={{ my: 2, color: "white", display: "block" }}
+                >
+                  {page.name}
+                </Button>
               </NavLink>
             ))}
           </Box>
@@ -160,9 +173,11 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map((setting, index) => (
+                <MenuItem key={index} onClick={handleCloseUserMenu}>
+                  <NavLink to={`${setting.path}`}>
+                    <Typography textAlign="center">{setting.name}</Typography>
+                  </NavLink>
                 </MenuItem>
               ))}
             </Menu>
@@ -171,5 +186,5 @@ const Navbar = () => {
       </Container>
     </AppBar>
   );
-}
+};
 export default Navbar;

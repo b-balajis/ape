@@ -82,7 +82,6 @@ const SignIn = () => {
   }
   const handleSignIn = (e) => {
     e.preventDefault();
-    console.log(usertype, email, password, "data");
     authenticateUser();
   };
 
@@ -161,13 +160,14 @@ const SignIn = () => {
                 })}
               />
               {errors.email && (
-                <span className="text-red mb-6">{errors.email.message}</span>
+                <span className="text-red-600 mb-6">{errors.email.message}</span>
               )}
               <TextField
                 label="Password"
                 fullWidth
                 className="mt-10"
                 variant="outlined"
+                required
                 type={showPassword ? "text" : "password"}
                 InputProps={{
                   endAdornment: (
@@ -188,7 +188,7 @@ const SignIn = () => {
                 })}
               />
               {errors.password && (
-                <span className="text-red mb-6">{errors.password.message}</span>
+                <span className="text-red-600 mb-6">{errors.password.message}</span>
               )}
               <FormControl
                 sx={{ mt: 2, mb: 2, minWidth: 0 }}

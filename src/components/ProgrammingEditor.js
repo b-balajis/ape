@@ -20,7 +20,6 @@ const ProgrammingEditor = () => {
         `/${presentSem}/${subjectName}/${questionNum}/fetchQuestion`
       );
       const data = await response.json();
-      console.log(data);
       setQuestion(data);
     }
     fetchPresentSemData();

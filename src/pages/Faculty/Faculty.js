@@ -1,10 +1,11 @@
-import React from 'react';
-import Navbar from "./Navbar"
-import ListofSubjects from "./ListofSubjects"
+/* eslint-disable react-hooks/exhaustive-deps */
+import React from "react";
+import Navbar from "./Navbar";
+import ListofSubjects from "./ListofSubjects";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiresponse } from "../../store/modules/app/slices/app.slice";
-import ProfileCard from './ProfileCard';
+import ProfileCard from "./ProfileCard";
 
 const Faculty = () => {
   const email = localStorage.getItem("email");
@@ -13,15 +14,13 @@ const Faculty = () => {
     async function fetchStudentData() {
       try {
         const response = await fetch(`/fetchFaculty/${email}`);
-        const studentData = await response.json();
+        const facultyData = await response.json();
         if (!response.ok) {
-          throw new Error(studentData.message);
+          throw new Error(facultyData.message);
         }
-        dispatch(apiresponse(studentData));
-        const { batch, jntu } = studentData;
-        localStorage.setItem("jntu", jntu);
+        dispatch(apiresponse(facultyData));
         // fetchPresentSemData(batch);
-        return studentData;
+        return facultyData;
       } catch (error) {
         console.error(error);
         throw error;
@@ -31,13 +30,13 @@ const Faculty = () => {
   }, []);
   return (
     <>
-    <Navbar />
-   <div className='flex justify-around mt-[10vh]'>
-   <ProfileCard />
-    <ListofSubjects />
-   </div>
+      <Navbar />
+      <div className="flex justify-around mt-[10vh] px-[10vh] gap-4">
+        <ProfileCard />
+        <ListofSubjects />
+      </div>
     </>
-  )
-}
+  );
+};
 
 export default Faculty;
