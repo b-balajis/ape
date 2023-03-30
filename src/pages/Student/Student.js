@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiresponse } from "../../store/modules/app/slices/app.slice";
 import ProfileCard from "./ProfileCard"
+import headers from "../../components/APIHeader";
 
 const Student = () => {
   const dispatch = useDispatch();
@@ -13,7 +14,10 @@ const Student = () => {
   useEffect(() => {
     async function fetchStudentData() {
       try {
-        const response = await fetch(`/fetchStudent/${email}`);
+        const response = await fetch(`/fetchStudent/${email}`, {
+          method: 'GET',
+          headers: headers
+        });
         const studentData = await response.json();
         if (!response.ok) {
           throw new Error(studentData.message);
@@ -33,7 +37,10 @@ const Student = () => {
 
   const fetchPresentSemData = async (batch) => {
     try {
-      const presentSemData = await fetch(`/runningSems`);
+      const presentSemData = await fetch(`/runningSems`,{
+        method: 'GET',
+        headers: headers
+      })
       const semdata = await presentSemData.json();
       if (!presentSemData.ok) {
         throw new Error(semdata.message);

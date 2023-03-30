@@ -20,6 +20,7 @@ import Home from "./page/Home";
 import AddQuestion from "./pages/Faculty/AddQuestion";
 import Management from "./pages/Admin/Management";
 import QuesionView from "./pages/Faculty/QuestionView";
+import OTP from "./pages/Faculty/OTP";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/f/:subjectName/:question" element={<QuesionView />} />
             <Route path="/f/dashboard" element={<FacultyDashboard />} />
             <Route path="/f/addquestion" element={<AddQuestion />} />
+            <Route path="/f/otp" element={<OTP />} />
             <Route path="/s" element={<StudentHome />} />
             <Route path="/s/profile" element={<Profile />} />
             <Route path="/s/:subjectName" element={<StudentSubject />} />

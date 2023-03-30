@@ -2,6 +2,7 @@
 import { NavLink } from "react-router-dom";
 import Loader from "../../components/Loader";
 import { useEffect, useState } from "react";
+import headers from "../../components/APIHeader";
 
 const ListOfSubjects = () => {
   const [subjectDetails, setSubjectDetails] = useState("");
@@ -16,7 +17,9 @@ const ListOfSubjects = () => {
     async function fetchPresentSemData() {
       setIsLoading(true);
       const response = await fetch(
-        `/${presentSem}/fetchpresentSemData`
+        `/${presentSem}/fetchpresentSemData`, {
+          headers: headers
+        }
       );
       const data = await response.json();
       console.log(data);
