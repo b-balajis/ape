@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 import Languages from "../data/languages.json";
 
 const ProgrammingEditor = () => {
-  const { code, setCode, output, error } = useEditor() || {};
+  const { code, setCode, output, error, actualOutputValue, wrongAnswerCheck } =
+    useEditor() || {};
   const [question, setQuestion] = useState("");
 
   const link = useParams();
@@ -16,10 +17,9 @@ const ProgrammingEditor = () => {
   const presentSem = localStorage.getItem("sem");
   const subjectName = link.subjectName;
   const lan = location.state.language;
-  
+
   //to set the language value to language
   const language = Languages.find((lang) => lang.value === lan);
-  console.log(language);
   const dept = localStorage.getItem("dept");
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ProgrammingEditor = () => {
       setQuestion(data);
     }
     fetchPresentSemData();
-  }, [questionNum])
+  }, [questionNum]);
 
   useEffect(() => {
     function disableRightClick(e) {
@@ -49,14 +49,6 @@ const ProgrammingEditor = () => {
   }, []);
 
   const handleMarksAllotment = () => {
-    const result = (output[0] / output[1]) * 15;
-    console.log(result, "result");
-    
-    // const setResult = {
-    //   id: questionNum,
-    //   marks: result,
-    // };
-    // const resultPayload = [dept, sem, sub, jntu, questionNum, setResult];
     if (output[0] === output[1]) {
       return (
         <div className="flex items-center justify-center w-full h-12 bg-green-500">
@@ -80,10 +72,14 @@ const ProgrammingEditor = () => {
             {question.qno}. {question.question}
           </h1>
           <section className="flex-grow h-[80vh]">
-            <Editor language={language.language} code={code} setCode={setCode} />
+            <Editor
+              language={language.language}
+              code={code}
+              setCode={setCode}
+            />
           </section>
 
-          <CompilerPage question={question} />
+          <CompilerPage question={question} language={language} />
 
           <section className="flex flex-col items-start justify-start gap-4 text-white">
             <div>
@@ -95,6 +91,12 @@ const ProgrammingEditor = () => {
               <h1>{question.sampleoutput}</h1>
             </div>
 
+            {wrongAnswerCheck && (
+              <div>
+                <h1>Actual Output : </h1>
+                <h1>{actualOutputValue}</h1>
+              </div>
+            )}
             {/* Output area */}
             {output && (
               <div className="w-full">

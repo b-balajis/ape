@@ -23,6 +23,7 @@ import "ace-builds/src-noconflict/mode-python";
 
 // Additonal editor settings tools
 import "ace-builds/src-noconflict/ext-language_tools";
+import "ace-builds/src-noconflict/ext-emmet";
 
 const Editor = ({
   language,
@@ -78,6 +79,9 @@ const Editor = ({
           autoScrollEditorIntoView: true,
           showLineNumbers,
           fixedWidthGutter: true,
+          enableEmmet: true,
+          enableSnippets: true,
+          enableLiveAutoComplete: true,
         }}
       />
     </div>
