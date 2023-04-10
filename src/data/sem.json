@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "sem": "First Sem",
+        "value": "firstSem"
+    },
+    {
+        "id":2,
+        "sem": "Second Sem",
+        "value": "secondSem"
+    },
+    {
+        "id":3,
+        "sem": "Third Sem",
+        "value": "thirdSem"
+    },
+    {
+        "id":4,
+        "sem": "Fourth Sem",
+        "value": "fourthSem"
+    },
+    {
+        "id":5,
+        "sem": "Fifth Sem",
+        "value": "fifthSem"
+    },
+    {
+        "id":6,
+        "sem": "Sixth Sem",
+        "value": "sixthSem"
+    },
+    {
+        "id":7,
+        "sem":"Seventh Sem",
+        "value": "seventhSem"
+    },
+    {
+        "id":8,
+        "sem": "Eighth Sem",
+        "value": "eighthSem"
+    }
+]

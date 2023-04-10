@@ -2,22 +2,30 @@
 import { useEditor } from "../context/AppContext";
 import CompilerPage from "./CompilerPage";
 import Editor from "./Editor";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Languages from "../data/languages.json";
 
 const ProgrammingEditor = () => {
   const { code, setCode, output, error } = useEditor() || {};
   const [question, setQuestion] = useState("");
 
   const link = useParams();
-  const questionNum = link.question - 1;
+  const location = useLocation();
+  const questionNum = link.question;
   const presentSem = localStorage.getItem("sem");
   const subjectName = link.subjectName;
+  const lan = location.state.language;
+  
+  //to set the language value to language
+  const language = Languages.find((lang) => lang.value === lan);
+  console.log(language);
+  const dept = localStorage.getItem("dept");
 
   useEffect(() => {
     async function fetchPresentSemData() {
       const response = await fetch(
-        `/${presentSem}/${subjectName}/${questionNum}/fetchQuestion`
+        `/${presentSem}/${dept}/${subjectName.toUpperCase()}/${questionNum}/fetchQuestion`
       );
       const data = await response.json();
       setQuestion(data);
@@ -72,7 +80,7 @@ const ProgrammingEditor = () => {
             {question.qno}. {question.question}
           </h1>
           <section className="flex-grow h-[80vh]">
-            <Editor language={subjectName} code={code} setCode={setCode} />
+            <Editor language={language.language} code={code} setCode={setCode} />
           </section>
 
           <CompilerPage question={question} />

@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiresponse } from "../../store/modules/app/slices/app.slice";
-import ProfileCard from "./ProfileCard"
 import headers from "../../components/APIHeader";
 
 const Student = () => {
@@ -23,8 +22,9 @@ const Student = () => {
           throw new Error(studentData.message);
         }
         dispatch(apiresponse(studentData));
-        const { batch, jntu } = studentData;
+        const { batch, jntu, dept } = studentData;
         localStorage.setItem("jntu", jntu);
+        localStorage.setItem("dept", dept);
         fetchPresentSemData(batch);
         return studentData;
       } catch (error) {
@@ -65,7 +65,6 @@ const Student = () => {
     <>
       <Navbar />
       <div className="flex justify-around mt-[10vh]">
-      <ProfileCard />
       <ListofSubjects />
       </div>
     </>

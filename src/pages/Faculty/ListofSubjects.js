@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Grid, Paper, Typography, styled } from "@mui/material";
 import { NavLink } from "react-router-dom";
+import headers from "../../components/APIHeader";
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(2),
@@ -15,7 +16,9 @@ const FacutlySubjects = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch(`/${name}/facultydashboard`);
+      const response = await fetch(`/${name}/facultydashboard`, {
+        headers: headers
+      });
       const data = await response.json();
       setFacultyDashboard(data);
     }

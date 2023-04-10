@@ -17,27 +17,31 @@ const StudentDashboard = () => {
   const [marks, setMarks] = useState("");
 
   const sem = localStorage.getItem("sem");
-  const subject = "python";
+  const dept = localStorage.getItem("dept");
   const jntu = "19341A1217";
+
+  const courseCode = window.location.pathname.split("/")[2];
+  console.log(courseCode);
 
   useEffect(() => {
     async function fetchQuestions() {
-      const response = await fetch(`/${sem}/${subject}/fetchQuestions`);
+      const response = await fetch(`
+      /${sem}/${dept}/${courseCode}/fetchQuestions`);
       const data = await response.json();
       setQuestions(data);
     }
     fetchQuestions();
   }, []);
 
-  useEffect(() => {
-    async function fetchQuestions() {
-      const response = await fetch(`/studentDashboard?sem=${sem}&subject=${subject}&jntu=${jntu}`);
-        const data = await response.json();
-      setMarks(data);
-      console.log(data);
-    }
-    fetchQuestions();
-  }, [])
+  // useEffect(() => {
+  //   async function fetchQuestions() {
+  //     const response = await fetch(`/studentDashboard?sem=${sem}&subject=${courseCode}&jntu=${jntu}`);
+  //       const data = await response.json();
+  //     setMarks(data);
+  //     console.log(data);
+  //   }
+  //   fetchQuestions();
+  // }, [])
 
   useEffect(() => {});
   console.log(questions);

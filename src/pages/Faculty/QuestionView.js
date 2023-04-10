@@ -11,10 +11,11 @@ const QuestionView = () => {
   const subjectName = location.state.subjectName;
   const presentSem = location.state.sem;
   const questionNum = location.state.question.qno;
+  const dept = localStorage.getItem("dept");
   useEffect(() => {
     async function fetchQuestion() {
       const response = await fetch(
-        `/${presentSem}/${subjectName}/${questionNum - 1}/fetchQuestion`
+        `/${presentSem}/${dept}/${subjectName}/${questionNum}/fetchQuestion`
       );
       const data = await response.json();
       console.log(data);

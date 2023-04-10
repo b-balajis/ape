@@ -19,6 +19,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
+import headers from "../../components/APIHeader";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -48,7 +49,10 @@ const Mangement = () => {
   useEffect(() => {
     async function fetchRunningSems() {
       try {
-        const presentSemData = await fetch(`/runningSems`);
+        const presentSemData = await fetch(`/runningSems`,{
+          headers: headers
+        }
+        );
         const semdata = await presentSemData.json();
         if (!presentSemData.ok) {
           throw new Error(semdata.message);
