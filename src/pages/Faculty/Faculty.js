@@ -6,14 +6,17 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiresponse } from "../../store/modules/app/slices/app.slice";
 import ProfileCard from "./ProfileCard";
+import headers from "../../components/APIHeader";
 
 const Faculty = () => {
   const email = localStorage.getItem("email");
   const dispatch = useDispatch();
   useEffect(() => {
-    async function fetchStudentData() {
+    async function fetchFacultProfile() {
       try {
-        const response = await fetch(`/fetchFaculty/${email}`);
+        const response = await fetch(`/fetchFaculty/${email}`, {
+          headers: headers
+        });
         const facultyData = await response.json();
         if (!response.ok) {
           throw new Error(facultyData.message);
@@ -26,7 +29,7 @@ const Faculty = () => {
         throw error;
       }
     }
-    fetchStudentData();
+    fetchFacultProfile();
   }, []);
   return (
     <>

@@ -13,15 +13,18 @@ import Loader from "../../components/Loader";
 const Subject = () => {
   const [questions, setQuestions] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [language, setLanguage] = useState("");
 
   const subName = useParams().subjectName;
   const sem = localStorage.getItem("sem");
+  const dept = localStorage.getItem("dept")
   useEffect(() => {
     async function fetchQuestions() {
       setIsLoading(true);
-      const response = await fetch(`/${sem}/${subName}/fetchQuestions`);
+      const response = await fetch(`/${sem}/${dept}/${subName.toUpperCase()}/fetchQuestions`);
       const data = await response.json();
-      setQuestions(data);
+      setQuestions(data.questions);
+      setLanguage(data.language);
       setIsLoading(false);
     }
     fetchQuestions();
@@ -30,6 +33,8 @@ const Subject = () => {
   const handleSolve = (id) => {
     console.log("Solve", id);
   };
+
+  console.log(language);
 
   return (
     <>
@@ -63,6 +68,7 @@ const Subject = () => {
                           state={{
                             question: question,
                             subjectName: subName,
+                            language: language
                           }}
                         >
                           <Button

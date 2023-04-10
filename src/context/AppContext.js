@@ -27,6 +27,8 @@ export const AppProvider = ({ children }) => {
   const [batch, setBatch] = useState("");
   const [sem, setSem] = useState("");
   const [usetType, setUserType] = useState("");
+  const [actualOutputValue, setActualOutputValue] = useState("");
+  const [wrongAnswerCheck, setWrongAnswerCheck] = useState(false);
 
   return (
     <AppContext.Provider
@@ -71,6 +73,10 @@ export const AppProvider = ({ children }) => {
         setSem,
         usetType,
         setUserType,
+        actualOutputValue,
+        setActualOutputValue,
+        wrongAnswerCheck,
+        setWrongAnswerCheck,
       }}
     >
       {children}

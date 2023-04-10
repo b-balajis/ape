@@ -14,10 +14,11 @@ const Subject = () => {
   const subName = location.state.subjectName;
   const sem = location.state.sem;
   console.log(subName, sem);
+  const dept = localStorage.getItem("dept")
 
   useEffect(() => {
     async function fetchQuestions() {
-      const response = await fetch(`/${sem}/${subName}/fetchQuestions`);
+      const response = await fetch(`/${sem}/${dept}/${subName}/fetchQuestions`);
       const data = await response.json();
       setQuestions(data);
       console.log(data);

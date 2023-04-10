@@ -23,8 +23,9 @@ const Student = () => {
           throw new Error(studentData.message);
         }
         dispatch(apiresponse(studentData));
-        const { batch, jntu } = studentData;
+        const { batch, jntu, dept } = studentData;
         localStorage.setItem("jntu", jntu);
+        localStorage.setItem("dept", dept);
         fetchPresentSemData(batch);
         return studentData;
       } catch (error) {

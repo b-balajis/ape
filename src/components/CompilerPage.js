@@ -1,4 +1,3 @@
-
 import React from "react";
 import Button from "@mui/material/Button";
 import axios from "axios";
@@ -7,20 +6,30 @@ import qs from "qs";
 import { useState } from "react";
 import Stack from "@mui/material/Stack";
 import MuiAlert from "@mui/material/Alert";
-import Dialog from '@mui/material/Dialog';
+import Dialog from "@mui/material/Dialog";
+import Headers from "../components/APIHeader";
+import { useParams } from "react-router-dom";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
 const CompileButton = (props) => {
-  const { code, setOutput, setError, isSubmitting, setIsSubmitting, setSubmitted } =
-    useEditor() || {};
+  const {
+    code,
+    setOutput,
+    setError,
+    isSubmitting,
+    setIsSubmitting,
+    setSubmitted,
+    setActualOutputValue,
+    setWrongAnswerCheck,
+  } = useEditor() || {};
   const [compiled, setCompiled] = useState(false);
   const [badRequest, setBadRequest] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
-  const [actualOutputValue, setActualOutputValue] = useState();
-  const [sampleOutputValue, setSampleOutputValue] = useState();
+  const link = useParams();
+  const jntu = localStorage.getItem("jntu");
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -33,9 +42,10 @@ const CompileButton = (props) => {
 
   const question = props.question;
   const noofTestCases = question.testcases;
+  const language = props.language;
 
   const [responseData, setResponseData] = useState(null);
-  if(responseData){
+  if (responseData) {
     //
   }
   const [isCompiling, setIsCompiling] = useState(false);
@@ -44,12 +54,13 @@ const CompileButton = (props) => {
   const sampleOutput = question.sampleoutput;
 
   const handleRun = async () => {
-    setOutput("")
+    setWrongAnswerCheck(false);
+    setOutput("");
     setError("");
     setIsCompiling(true);
     const data = qs.stringify({
       code: code,
-      language: "py",
+      language: language.value,
       input: sampleInput,
     });
     const config = {
@@ -60,7 +71,7 @@ const CompileButton = (props) => {
       },
       data: data,
     };
-    
+
     try {
       const response = await axios(config);
       setResponseData(response.data);
@@ -69,13 +80,12 @@ const CompileButton = (props) => {
       if (error !== "") {
         console.log("error", error);
         setError(error);
-      } else if ( actualOutput === sampleOutput){
-        setCompiled(true)
-      }
-       else if ( actualOutput !== sampleOutput) {
+      } else if (actualOutput === sampleOutput) {
+        setCompiled(true);
+      } else if (actualOutput !== sampleOutput) {
         setWrongAnswer(true);
+        setWrongAnswerCheck(true);
         setActualOutputValue(actualOutput);
-        setSampleOutputValue(sampleOutput);
       }
     } catch (err) {
       console.error(err.code);
@@ -85,16 +95,25 @@ const CompileButton = (props) => {
   };
 
   const handleSubmission = async () => {
+    setWrongAnswerCheck(false);
     setIsSubmitting(true);
-    setOutput("")
+    setOutput("");
     setError("");
+    const totalMarksObtained = await handleCodeSubmission();
+    setSubmitted(true);
+    setIsSubmitting(false);
+    handleSubmitMarks(totalMarksObtained);
+  };
+
+  const handleCodeSubmission = async () => {
     let noofTestCasesPassed = 0;
+    let totalMarksObtained = 0;
     for (let x in noofTestCases) {
       const testcaseInput = noofTestCases[x].input;
       const testcaseOutput = noofTestCases[x].output;
       const data = qs.stringify({
         code: code,
-        language: "py",
+        language: language.value,
         input: testcaseInput,
       });
       const config = {
@@ -117,26 +136,45 @@ const CompileButton = (props) => {
           break;
         }
         if (actualOutput === testcaseOutput && error === "") {
+          const marksforTestCase = question.testcases[x].marks;
+          totalMarksObtained = totalMarksObtained + marksforTestCase;
+          console.log(totalMarksObtained);
           noofTestCasesPassed++;
         } else {
-          console.log("actual output", actualOutput);
-          console.log("Test Case Failed");
-          break;
+          console.log("Failed");
         }
-      } catch (err) {
-        console.error(err);
+      } catch (error) {
+        console.log("error", error);
+        setError(error.message);
       }
     }
     const output = [noofTestCasesPassed, noofTestCases.length];
-    setSubmitted(true);
     setOutput(output);
-    setIsSubmitting(false);
+    return totalMarksObtained;
+  };
+
+  const section = "A";
+
+  const handleSubmitMarks = async (totalMarks) => {
+    const res = await fetch(
+      `/${link.subjectName.toUpperCase()}/${section}/addMarks`,
+      {
+        method: "POST",
+        headers: Headers,
+        body: JSON.stringify({
+          jntu: jntu,
+          qno: Number(link.question),
+          marks: totalMarks,
+        }),
+      }
+    );
+    console.log(res, "output");
   };
 
   const badRequestMessage = () => {
     return (
       <Dialog open={badRequest || wrongAnswer} onClose={handleClose}>
-        <Stack spacing={2} sx={{ width: "100%"}}>
+        <Stack spacing={2} sx={{ width: "100%" }}>
           <Alert
             onClose={handleClose}
             severity="error"
@@ -144,10 +182,10 @@ const CompileButton = (props) => {
           >
             {badRequest ? "Bad Request" : "Wrong Answer"}
           </Alert>
-      </Stack>
+        </Stack>
       </Dialog>
-    )
-  }
+    );
+  };
 
   const compiledSuccessfully = () => {
     return (
@@ -158,56 +196,56 @@ const CompileButton = (props) => {
             severity="success"
             sx={{ width: "100%", fontSize: 30 }}
           >
-            Code Compiled Successfully <br/>
+            Code Compiled Successfully <br />
             Submit your code to get Grade
           </Alert>
-      </Stack>
+        </Stack>
       </Dialog>
-    )
-  }
+    );
+  };
 
   return (
     <>
-    <section className="flex justify-between">
-      <div className="flex gap-4">
-        {noofTestCases.map((sub, i) => (
-          <>
-            {isSubmitting ? (
-              <Button variant="outlined" color="secondary">
-                Test Case {i + 1}
-              </Button>
-            ) : (
-              <Button variant="outlined" color="success">
-                Test Case {i + 1}
-              </Button>
-            )}
-          </>
-        ))}
-      </div>
-      <div className="flex gap-x-4">
-        <Button
-          className="w-48 hover:text-white"
-          variant="outlined"
-          color="primary"
-          size="large"
-          onClick={handleRun}
-        >
-          {isCompiling ? "Compiling..." : "Run"}
-        </Button>
-        <Button
-          className="w-48"
-          variant="contained"
-          color="success"
-          size="large"
-          onClick={handleSubmission}
-        >
-          {isSubmitting ? "Compiling..." : "Submit"}
-        </Button>
-      </div>
-    </section>
-    {compiled && (compiledSuccessfully())}
-    {(badRequest) && (badRequestMessage())}
-    {wrongAnswer && (badRequestMessage())}
+      <section className="flex justify-between">
+        <div className="flex gap-4">
+          {noofTestCases.map((sub, i) => (
+            <>
+              {isSubmitting ? (
+                <Button variant="outlined" color="secondary">
+                  Test Case {i + 1}
+                </Button>
+              ) : (
+                <Button variant="outlined" color="success">
+                  Test Case {i + 1}
+                </Button>
+              )}
+            </>
+          ))}
+        </div>
+        <div className="flex gap-x-4">
+          <Button
+            className="w-48 hover:text-white"
+            variant="outlined"
+            color="primary"
+            size="large"
+            onClick={handleRun}
+          >
+            {isCompiling ? "Compiling..." : "Run"}
+          </Button>
+          <Button
+            className="w-48"
+            variant="contained"
+            color="success"
+            size="large"
+            onClick={handleSubmission}
+          >
+            {isSubmitting ? "Compiling..." : "Submit"}
+          </Button>
+        </div>
+      </section>
+      {compiled && compiledSuccessfully()}
+      {badRequest && badRequestMessage()}
+      {wrongAnswer && badRequestMessage()}
     </>
   );
 };

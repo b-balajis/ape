@@ -12,12 +12,13 @@ const ListOfSubjects = () => {
 
   // const { org } = useSelector((state) => state.org.orgInfo);
   const presentSem = localStorage.getItem("sem");
+  const dept = localStorage.getItem("dept");
   
   useEffect(() => {
     async function fetchPresentSemData() {
       setIsLoading(true);
       const response = await fetch(
-        `/${presentSem}/fetchpresentSemData`, {
+        `/${presentSem}/${dept}/fetchSubjects`, {
           headers: headers
         }
       );
@@ -43,14 +44,14 @@ const ListOfSubjects = () => {
               <div className="flex flex-wrap text-center mr-4">
                 <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
                   <NavLink
-                    to={`${subject.toLowerCase()}`}
-                    key={subject}
+                    to={`${subject.courseCode.toLowerCase()}`}
+                    key={subject.courseCode}
                     state={{
-                      subjectName: subject,
+                      subjectName: subject.courseCode,
                     }}
                   >
-                    <div className="bg-blue-400 w-48 h-48">
-                      <p className="text-black text-3xl uppercase">{subject}</p>
+                    <div className="bg-blue-400 w-[20rem] h-48">
+                      <p className="text-black text-3xl uppercase">{subject.subject}</p>
                     </div>
                   </NavLink>
                 </div>
@@ -58,32 +59,6 @@ const ListOfSubjects = () => {
             ))}
           </div>
         )}
-        {/* <div className="flex items-center justify-center">
-        {subjectDetails?.map((subject) => (
-          <div className="flex flex-wrap text-center mr-4">
-            <div className="border rounded-lg transform transition duration-500 hover:scale-110 mt-1">
-              <NavLink
-                to={`${subject.name.toLowerCase()}`}
-                key={subject.name}
-                state={
-                  {
-                    subjectName: subject.name,
-                  }}
-                >
-                  <img
-                    src={subject.image}
-                    alt={subject.name}
-                    className="rounded-xl h-40 w-64"
-                  />
-                </NavLink>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div> */}
-        {/* {loadedData?.map((subject) => (
-          <p>{subject}</p>
-        ))} */}
       </div>
     </>
   );

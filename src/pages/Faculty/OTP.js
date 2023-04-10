@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import headers from '../../components/APIHeader';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -10,7 +11,9 @@ function LoginForm() {
     e.preventDefault();
     try {
       // Generate and send the OTP code to the user's email address
-      const response = await axios.post('/generateOtp', { email });
+      const response = await axios.post('/generateOtp', { email }, {
+        headers: headers
+      });
       if (!response.data.success) {
         setMessage(response.data.message);
         return;
