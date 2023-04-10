@@ -5,7 +5,6 @@ import Navbar from "./Navbar";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { apiresponse } from "../../store/modules/app/slices/app.slice";
-import ProfileCard from "./ProfileCard"
 import headers from "../../components/APIHeader";
 
 const Student = () => {
@@ -66,7 +65,6 @@ const Student = () => {
     <>
       <Navbar />
       <div className="flex justify-around mt-[10vh]">
-      <ProfileCard />
       <ListofSubjects />
       </div>
     </>
