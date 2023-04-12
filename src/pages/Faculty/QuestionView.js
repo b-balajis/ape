@@ -1,28 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import Navbar from "./Navbar";
 
 const QuestionView = () => {
   const [questionData, setQuestion] = useState("");
   const location = useLocation();
-  const subjectName = location.state.subjectName;
-  const presentSem = location.state.sem;
-  const questionNum = location.state.question.qno;
+  const link = useParams();
+  console.log(location.state);
+  const {courseCode, sem } = location.state;
   const dept = localStorage.getItem("dept");
   useEffect(() => {
     async function fetchQuestion() {
       const response = await fetch(
-        `/${presentSem}/${dept}/${subjectName}/${questionNum}/fetchQuestion`
+        `/${sem}/${dept}/${courseCode}/${link.question}/fetchQuestion`
       );
       const data = await response.json();
-      console.log(data);
-      setQuestion(data);
+      setQuestion(data.question);
     }
     fetchQuestion();
-  }, [questionNum]);
+  }, [link.question]);
   const { qno, question, sampleinput, sampleoutput, testcases } = questionData;
   return (
     <>
@@ -67,6 +66,12 @@ const QuestionView = () => {
                 </Typography>
                 <Typography variant="body1" gutterBottom>
                   {tc.output}
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  Marks:
+                </Typography>
+                <Typography variant="h6" gutterBottom>
+                  {tc.marks}:
                 </Typography>
               </Box>
             ))}

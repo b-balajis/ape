@@ -2,7 +2,7 @@
 import { useEditor } from "../context/AppContext";
 import CompilerPage from "./CompilerPage";
 import Editor from "./Editor";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Languages from "../data/languages.json";
 
@@ -13,7 +13,6 @@ const ProgrammingEditor = () => {
   const [language, setLanguage] = useState();
 
   const link = useParams();
-  const location = useLocation();
   const questionNum = link.question;
   const presentSem = localStorage.getItem("sem");
   const courseCode = link.courseCode;
