@@ -153,16 +153,15 @@ const CompileButton = (props) => {
     return totalMarksObtained;
   };
 
-  const section = "A";
+  const section = localStorage.getItem("sec");
 
   const handleSubmitMarks = async (totalMarks) => {
     const res = await fetch(
-      `/${link.subjectName.toUpperCase()}/${section}/addMarks`,
+      `/${link.courseCode.toUpperCase()}/${section}/${jntu}/submitMarks`,
       {
         method: "POST",
         headers: Headers,
         body: JSON.stringify({
-          jntu: jntu,
           qno: Number(link.question),
           marks: totalMarks,
         }),

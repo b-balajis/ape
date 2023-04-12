@@ -10,7 +10,6 @@ import { AppProvider } from "./context/AppContext";
 import Subject from "./pages/Faculty/Subject";
 import StudentSubject from "./pages/Student/Subject";
 import Profile from "./pages/Student/Profile";
-import StudentDashboard from "./pages/Student/StudentDashboard";
 import FacultyDashboard from "./pages/Faculty/FacultyDashboard";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AddStudent from "./pages/Admin/AddStudent";
@@ -37,16 +36,15 @@ function App() {
             <Route path="/a/addsubject" element={<AddSubject />} />
             <Route path="/a/manage" element={<Management />} />
             <Route path="/f" element={<FacultyHome />} />
-            <Route path="/f/:subjectName" element={<Subject />} />
-            <Route path="/f/:subjectName/:question" element={<QuesionView />} />
+            <Route path="/f/:courseCode" element={<Subject />} />
+            <Route path="/f/:courseCode/:question" element={<QuesionView />} />
             <Route path="/f/dashboard" element={<FacultyDashboard />} />
             <Route path="/f/addquestion" element={<AddQuestion />} />
             <Route path="/f/otp" element={<OTP />} />
             <Route path="/s" element={<StudentHome />} />
             <Route path="/s/profile" element={<Profile />} />
-            <Route path="/s/:subjectName" element={<StudentSubject />} />
-            <Route path="/s/dashboard" element={<StudentDashboard />} />
-            <Route path="/s/:subjectName/:question" element={<Home />} />
+            <Route path="/s/:courseCode" element={<StudentSubject />} />
+            <Route path="/s/:courseCode/:question" element={<Home />} />
           </Routes>
         </main>
       </AppProvider>

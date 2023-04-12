@@ -16,7 +16,7 @@ import { Avatar } from "@mui/material";
 
 const pages = [
   { name: "Home", path: "/" },
-  { name: "Dashboard", path: "/dashboard" },
+  { name: "Internal", path: "/internal" },
 ];
 const settings = [
   { name: "Profile", path: "/s/profile" },

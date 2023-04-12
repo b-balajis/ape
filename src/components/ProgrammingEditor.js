@@ -10,27 +10,28 @@ const ProgrammingEditor = () => {
   const { code, setCode, output, error, actualOutputValue, wrongAnswerCheck } =
     useEditor() || {};
   const [question, setQuestion] = useState("");
+  const [language, setLanguage] = useState();
 
   const link = useParams();
   const location = useLocation();
   const questionNum = link.question;
   const presentSem = localStorage.getItem("sem");
-  const subjectName = link.subjectName;
-  const lan = location.state.language;
+  const courseCode = link.courseCode;
 
   //to set the language value to language
-  const language = Languages.find((lang) => lang.value === lan);
   const dept = localStorage.getItem("dept");
 
   useEffect(() => {
-    async function fetchPresentSemData() {
+    async function fetchQuestion() {
       const response = await fetch(
-        `/${presentSem}/${dept}/${subjectName.toUpperCase()}/${questionNum}/fetchQuestion`
+        `/${presentSem}/${dept}/${courseCode.toUpperCase()}/${questionNum}/fetchQuestion`
       );
       const data = await response.json();
-      setQuestion(data);
+      setQuestion(data.question);
+      const value = Languages.find((lang) => lang.value === data.language);
+      setLanguage(value);
     }
-    fetchPresentSemData();
+    fetchQuestion();
   }, [questionNum]);
 
   useEffect(() => {

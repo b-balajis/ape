@@ -29,7 +29,6 @@ const ListOfSubjects = () => {
         }
       );
       const data = await response.json();
-      console.log(data);
       setSubjectDetails(data.mergedData);
       setIsLoading(false);
     }
@@ -57,7 +56,8 @@ const ListOfSubjects = () => {
                   to={`${subject.courseCode.toLowerCase()}`}
                   key={subject.courseCode}
                   state={{
-                    subjectName: subject.courseCode,
+                    subject: subject.subject,
+                    courseCode: subject.courseCode
                   }}
                 >
                   <CardContent
