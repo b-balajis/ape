@@ -10,6 +10,7 @@ import { Typography } from "@mui/material/";
 const ListOfSubjects = () => {
   const [subjectDetails, setSubjectDetails] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   // const [presentSem, setPresentSem] = useState(null);
   // console.log(data);
 
@@ -29,6 +30,12 @@ const ListOfSubjects = () => {
         }
       );
       const data = await response.json();
+      if (!response.ok) {
+        alert(data.error);
+        setError(true);
+        setIsLoading(false)
+        throw new Error(data.message);
+      }
       setSubjectDetails(data.mergedData);
       setIsLoading(false);
     }
@@ -57,7 +64,7 @@ const ListOfSubjects = () => {
                   key={subject.courseCode}
                   state={{
                     subject: subject.subject,
-                    courseCode: subject.courseCode
+                    courseCode: subject.courseCode,
                   }}
                 >
                   <CardContent
@@ -100,6 +107,11 @@ const ListOfSubjects = () => {
         {isLoading && (
           <div className="flex justify-center place-items-center v-screen">
             <Loader />
+          </div>
+        )}
+        {error && (
+          <div>
+            <h1>Something went wrong</h1>
           </div>
         )}
       </div>

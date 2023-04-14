@@ -33,7 +33,7 @@ const MenuProps = {
 };
 
 const Mangement = () => {
-  const [secondyear, setSecondYear] = useState("");
+  const [secondyear, setSecondYear] = useState([]);
   const [thirdyear, setThirdYear] = useState([]);
   const [fourthyear, setFourthYear] = useState([]);
   const [editSecondYear, setEditSecondYear] = useState(false);
@@ -89,7 +89,9 @@ const Mangement = () => {
   const handleSecondYearEdit = () => {
     if (!editSecondYear) return setEditSecondYear(true);
     else setEditSecondYear(true);
-    setAccessConfirmationDialog(true);
+    console.log(" wnd", secondyear, thirdyear, secondYearBatch);
+    updateSemAndBatch("secondYear", secondyear, secondYearBatch);
+    // setAccessConfirmationDialog(true);
   };
 
   const handleChangeThirdYear = (event) => {
@@ -101,7 +103,7 @@ const Mangement = () => {
   const handleThirdYearEdit = () => {
     if (!editThirdYear) return setEditThirdYear(true);
     else setEditThirdYear(true);
-    setAccessConfirmationDialog(true);
+    // setAccessConfirmationDialog(true);
   };
 
   const handleChangeFourthYear = (event) => {
@@ -113,8 +115,28 @@ const Mangement = () => {
   const handleFourthYearEdit = () => {
     if (!editFourthYear) return setEditFourthYear(true);
     else setEditFourthYear(true);
-    setAccessConfirmationDialog(true);
+    // setAccessConfirmationDialog(true);
   };
+
+  const updateSemAndBatch = async (year, sem, batch) => {
+    try{
+      const res = await fetch(`/${year}/updateYear`,{
+        method: "PUT",
+        headers: headers,
+        body: JSON.stringify({
+          sem: sem,
+          batch: batch,
+        }),
+      })
+      const data = await res.json();
+      if(!res.ok){
+        throw new Error(data.message)
+      }
+      console.log(data);
+    }catch(error){
+      console.log(error);
+    }
+  }
 
   const handleUpdateSem = async () => {
     console.log("update");

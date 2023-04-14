@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -11,15 +12,37 @@ import { TableHead } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
 import DownloadFile from "../../components/DownloadFile";
 import Navbar from "./Navbar";
+import { useState, useEffect } from "react";
+import ApiHeader from "../../components/APIHeader"
 
 export default function BasicTable() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [studentsMarks, setStudentMarks] = useState("");
+  const semester = "secondSem";
+  const courseCode = "21BEX08";
+  const section = "A";
+
+  // console.log(StudentDetails, studentsMarks);
+  useEffect(() => {
+    async function fetchData() {
+      const response = await fetch(
+        `/${semester}/${courseCode}/${section}/SubjectMarksDashboard`,
+        {
+          headers: ApiHeader,
+        }
+      );
+      const data = await response.json();
+      setStudentMarks(data.studentMarks);
+    }
+    fetchData();
+  }, []);
+  console.log(studentsMarks, "hellow");
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
     page > 0
-      ? Math.max(0, (1 + page) * rowsPerPage - StudentDetails.length)
+      ? Math.max(0, (1 + page) * rowsPerPage - studentsMarks.length)
       : 0;
 
   const handleChangePage = (event, newPage) => {
@@ -30,7 +53,8 @@ export default function BasicTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  let noOfExp = Object.keys(StudentDetails[0].expmarks).length;
+  // let noOfExp = Object.keys(StudentDetails[0].expmarks).length;
+  let noOfExp = 8;
 
   const headers = [
     { label: "S. No" },
@@ -42,8 +66,10 @@ export default function BasicTable() {
   return (
     <>
     <Navbar />
-    <DownloadFile data={StudentDetails} headers={headers} filename="studentdetails.csv" />
-      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <DownloadFile data={studentsMarks} headers={headers} filename="SubjectMarks.csv" />
+      {
+        studentsMarks && (
+          <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer component={Paper}>
           <Table
             stickyHeader
@@ -70,20 +96,20 @@ export default function BasicTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {(rowsPerPage > 0
-                ? StudentDetails.slice(
+              {/* {rowsPerPage > 0
+                ? studentsMarks.slice(
                     page * rowsPerPage,
                     page * rowsPerPage + rowsPerPage
                   )
-                : StudentDetails
-              ).map((row) => (
+                : */}
+              {studentsMarks?.map((row, index) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
-                    {row.id}
+                    {index + 1}
                   </TableCell>
                   <TableCell style={{ width: 140 }}>{row.jntu}</TableCell>
                   {[...Array(noOfExp)].map((e, i) => {
-                    return <TableCell>{row.expmarks[i]}</TableCell>;
+                    return <TableCell>{row?.marks[i]?.marks ? row?.marks[i].marks : 0}</TableCell>;
                   })}
                 </TableRow>
               ))}
@@ -107,6 +133,8 @@ export default function BasicTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
+        )
+      }
     </>
   );
 }

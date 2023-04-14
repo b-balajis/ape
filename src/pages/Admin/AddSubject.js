@@ -24,7 +24,6 @@ import headers from "../../components/APIHeader";
 import Loader from "../../components/Loader";
 import { useNavigate } from "react-router-dom";
 
-
 // function Copyright(props) {
 //   return (
 //     <Typography
@@ -48,7 +47,7 @@ const theme = createTheme();
 export default function SignUp() {
   const [semester, setSemester] = useState("");
   const [subject, setSubjectName] = useState();
-  const [courseId, setSubjectId] = useState();
+  const [courseCode, setCourseCode] = useState();
   const [credits, setCredits] = useState();
   const [language, setLanguage] = useState();
   const [isLoading, setIsLoading] = useState(false);
@@ -59,28 +58,29 @@ export default function SignUp() {
     setSemester(e.target.value);
   };
 
+  const dept = "IT";
+
   const submitData = async () => {
     setIsLoading(true);
     try {
-      const res = await fetch("/addSubject", {
+      const res = await fetch(`/${dept}/addSubject`, {
         headers: headers,
         method: "POST",
         body: JSON.stringify({
           semester,
           subject,
-          courseId,
-          credits,
           language,
+          courseCode,
+          credits,
         }),
       });
       const data = await res.json();
-      if(data?.success){
+      if (data?.success) {
         alert("Subject Added Successfully");
         navigate("/a/dashboard");
-      }else if(data.error){
+      } else if (data.error) {
         alert(data.error);
-      }
-      else{
+      } else {
         alert("Something Went Wrong");
       }
       console.log(data);
@@ -98,7 +98,7 @@ export default function SignUp() {
   const handleChangeCredits = (event) => {
     const input = event.target.value;
 
-    if (input === '' || (!isNaN(input) && input >= 1 && input <= 4)) {
+    if (input === "" || (!isNaN(input) && input >= 1 && input <= 4)) {
       setCredits(input);
     }
   };
@@ -155,10 +155,10 @@ export default function SignUp() {
                     required
                     fullWidth
                     id="id"
-                    label="Course ID"
+                    label="Course Code"
                     name="id"
-                    value={courseId}
-                    onChange={(e) => setSubjectId(e.target.value)}
+                    value={courseCode}
+                    onChange={(e) => setCourseCode(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -172,7 +172,10 @@ export default function SignUp() {
                     onChange={handleChangeCredits}
                     InputProps={{
                       inputProps: { min: 1, max: 4 },
-                      style: { '-moz-appearance': 'textfield', '-webkit-appearance': 'none' },
+                      style: {
+                        "-moz-appearance": "textfield",
+                        "-webkit-appearance": "none",
+                      },
                       inputMode: "numeric",
                       pattern: "[0-9]*",
                       disableSpinButtons: true,
@@ -212,7 +215,9 @@ export default function SignUp() {
                       onChange={handleChangeSem}
                     >
                       {semesters.map((sem) => (
-                        <MenuItem value={sem.value} key={sem.id}>{sem.sem}</MenuItem>
+                        <MenuItem value={sem.value} key={sem.id}>
+                          {sem.sem}
+                        </MenuItem>
                       ))}
                     </Select>
                   </FormControl>
