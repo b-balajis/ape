@@ -15,7 +15,7 @@ const ProfileAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 const ProfileCard = () => {
-  const facultyData = useSelector((state) => state.userData.userDetails);
+  const facultyData = useSelector((state) => state?.userData?.userDetails);
   return (
     <>
     {!facultyData && (

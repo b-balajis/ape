@@ -4,7 +4,7 @@ import Navbar from "./Navbar";
 import ListofSubjects from "./ListofSubjects";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { apiresponse } from "../../store/modules/app/slices/app.slice";
+import { profileData } from "../../store/modules/app/slices/profile.slice";
 import ProfileCard from "./ProfileCard";
 import headers from "../../components/APIHeader";
 
@@ -21,7 +21,7 @@ const Faculty = () => {
         if (!response.ok) {
           throw new Error(facultyData.message);
         }
-        dispatch(apiresponse(facultyData));
+        dispatch(profileData(facultyData));
         // fetchPresentSemData(batch);
         return facultyData;
       } catch (error) {

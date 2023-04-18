@@ -13,6 +13,8 @@ const FacutlySubjects = () => {
   const [facultyDashboard, setFacultyDashboard] = useState();
   const facultyData = useSelector((state) => state.userData.userDetails);
 
+  console.log(facultyData, "data");
+
   useEffect(() => {
     async function fetchData() {
       const response = await fetch(
@@ -26,10 +28,6 @@ const FacutlySubjects = () => {
     }
     fetchData();
   }, [facultyData]);
-
-  if (!facultyDashboard) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <Grid

@@ -4,13 +4,26 @@ import headers from "../../components/APIHeader";
 import { Card, Container, Grid } from "@mui/material";
 import semesterJson from "../../data/sem.json";
 import Loader from "../../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchRunningSems } from "../../store/modules/app/slices/runningSem.slice";
+import { fetchAdminDashboard } from "../../store/modules/app/slices/adminDashboard.slice";
 
 const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch();
+  // const { runningSems, loading, error } = useSelector(
+  //   (state) => state.runningSem
+  // );
+
+  useEffect(() => {
+    dispatch(fetchRunningSems());
+    dispatch(fetchAdminDashboard())
+  }, [dispatch]);
+
   useEffect(() => {
     async function fetchAdminDashboard() {
-      const res = await fetch("/fetchSemWiseData", {
+      const res = await fetch(`/BSH/fetchSemWiseData`, {
         headers: headers,
         method: "GET",
       });
@@ -34,10 +47,12 @@ const AdminDashboard = () => {
         </div>
       )}
       {dashboardData && (
+        <>
+        <h1 className="text-center mt-[1vh] text-3xl font-bold">Subject Details Semester wise</h1>
         <Container
           maxWidth="xl"
           sx={{
-            marginTop: 10,
+            marginTop: 5,
             display: "flex",
             flexDirection: "row",
             flexWrap: "wrap",
@@ -96,11 +111,11 @@ const AdminDashboard = () => {
                     >
                       <Grid item xs={3}>
                         <h1 className="text-center text-lg font-serif">
-                          {subject.courseId}
+                          {subject.courseCode}
                         </h1>
                       </Grid>
                       <Grid item xs={6}>
-                        <h1 className="text-left text-lg font-serif">
+                        <h1 className="text-center text-lg font-serif">
                           {subject.subject}
                         </h1>
                       </Grid>
@@ -116,6 +131,7 @@ const AdminDashboard = () => {
             );
           })}
         </Container>
+        </>
       )}
     </>
   );

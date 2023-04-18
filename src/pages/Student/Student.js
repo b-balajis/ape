@@ -4,7 +4,7 @@ import ListofSubjects from "./ListofSubjects";
 import Navbar from "./Navbar";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { apiresponse } from "../../store/modules/app/slices/app.slice";
+import { profileData } from "../../store/modules/app/slices/profile.slice";
 import headers from "../../components/APIHeader";
 
 const Student = () => {
@@ -21,7 +21,7 @@ const Student = () => {
         if (!response.ok) {
           throw new Error(studentData.message);
         }
-        dispatch(apiresponse(studentData));
+        dispatch(profileData(studentData));
         const { batch, jntu, dept, sec } = studentData;
         localStorage.setItem("jntu", jntu);
         localStorage.setItem("dept", dept);

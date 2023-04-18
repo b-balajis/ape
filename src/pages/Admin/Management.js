@@ -89,7 +89,6 @@ const Mangement = () => {
   const handleSecondYearEdit = () => {
     if (!editSecondYear) return setEditSecondYear(true);
     else setEditSecondYear(true);
-    console.log(" wnd", secondyear, thirdyear, secondYearBatch);
     updateSemAndBatch("secondYear", secondyear, secondYearBatch);
     // setAccessConfirmationDialog(true);
   };
@@ -103,6 +102,7 @@ const Mangement = () => {
   const handleThirdYearEdit = () => {
     if (!editThirdYear) return setEditThirdYear(true);
     else setEditThirdYear(true);
+    updateSemAndBatch("thirdYear", thirdyear, thirdYearBatch);
     // setAccessConfirmationDialog(true);
   };
 
@@ -115,16 +115,18 @@ const Mangement = () => {
   const handleFourthYearEdit = () => {
     if (!editFourthYear) return setEditFourthYear(true);
     else setEditFourthYear(true);
+    updateSemAndBatch("fourthYear", fourthyear, fourthYearBatch);
     // setAccessConfirmationDialog(true);
   };
 
   const updateSemAndBatch = async (year, sem, batch) => {
+    console.log(sem, sem[0], typeof sem);
     try{
       const res = await fetch(`/${year}/updateYear`,{
         method: "PUT",
         headers: headers,
         body: JSON.stringify({
-          sem: sem,
+          sem: sem[0],
           batch: batch,
         }),
       })

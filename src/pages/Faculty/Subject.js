@@ -21,7 +21,7 @@ const Subject = () => {
   useEffect(() => {
     async function fetchQuestions() {
       const response = await fetch(
-        `/${sem}/${dept}/${courseCode}/fetchQuestions`
+        `/${sem}/${courseCode}/fetchQuestions`
       );
       const data = await response.json();
       setQuestions(data.questions);
