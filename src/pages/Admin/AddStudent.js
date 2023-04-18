@@ -69,7 +69,7 @@ export default function SignUp() {
   const [type, setStudentType] = useState();
   const [gender, setGender] = useState();
   const [name, setFullName] = useState();
-  const [mobile, setMobileNum]  = useState();
+  const [mobile, setMobileNum] = useState();
   const [password, setPassword] = useState();
 
   const handleDept = (event) => {
@@ -82,14 +82,14 @@ export default function SignUp() {
 
   const handleJntu = (e) => {
     setJntu(e.target.value.toUpperCase());
-  }
+  };
 
   const handleFullName = (e) => {
     setFullName(e.target.value.toUpperCase());
-  }
+  };
 
   const submitStudentData = async () => {
-    try{
+    try {
       const res = await fetch(`/createNewStudent`, {
         method: "POST",
         headers: Header,
@@ -104,32 +104,54 @@ export default function SignUp() {
           mobile,
           password,
           gender,
-          usertype: "student"
-      })
+          usertype: "student",
+        }),
       });
       const data = await res.json();
-      if (data.success){
+      if (data.success) {
         alert("Student Account Created Successfully");
         window.location.reload();
-      }
-      else{
+      } else {
         alert(data.message);
       }
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const handleEmail = (e) => {
     setEmail(e.target.value.toUpperCase());
-  }
-
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     submitStudentData();
   };
 
+  const [file, setFile] = useState(null);
+
+  const handleFileChange = (e) => {
+    setFile(e.target.files[0]);
+  };
+
+  const handleStudentsAccountCreation = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await fetch("/addStudentsUsingExcel", {
+        method: "POST",
+        body: formData,
+      });
+      const data = await response.json();
+      console.log(data);
+      alert(data.message);
+      e.target.reset();
+    } catch (error) {
+      console.error(error);
+      // Handle any errors that occurred during the file upload
+    }
+  };
 
   return (
     <>
@@ -151,6 +173,13 @@ export default function SignUp() {
             <Typography component="h1" variant="h5">
               Create New Student Account
             </Typography>
+            <form
+              onSubmit={handleStudentsAccountCreation}
+              encType="multipart/form-data"
+            >
+              <input type="file" name="file" onChange={handleFileChange} />
+              <button type="submit">Upload</button>
+            </form>
             <Box
               component="form"
               noValidate
