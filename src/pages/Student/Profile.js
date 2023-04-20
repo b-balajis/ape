@@ -19,53 +19,65 @@ const ProfileCard = () => {
   const studentData = useSelector((state) => state.userData.userDetails);
   return (
     <>
-        <Navbar />
-    {!studentData && (
+      <Navbar />
+      {!studentData && (
         <div className="flex justify-center place-items-center v-screen h-screen ">
-            <Loader />
+          <Loader />
         </div>
-    )}
+      )}
       {studentData && (
-        <Card
-          sx={{
-            maxWidth: 345,
-            fontFamily: "sans-serif",
-            borderRadius: "16px",
-            marginTop: 10,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            transition: "transform 0.3s ease-in-out",
-            "&:hover": {
-              transform: "scale(1.05)",
-            },
-          }}
-        >
-          <CardContent>
-            <ProfileAvatar sx={{
-                fontSize: 24
-            }}>{studentData.name.charAt(0)}</ProfileAvatar>
-            <Typography gutterBottom variant="h4" component="div">
-              {studentData.name}
-            </Typography>
-            <Typography variant="body1" color="text.secondary">
-              Email: {studentData.email}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              JNTU Number: {studentData.jntu}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Dept: {studentData.dept}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Section: {studentData.sec}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Batch: {studentData.batch}
-            </Typography>
-          </CardContent>
-        </Card>
+        <div className="px-[20vh]">
+          <Card
+            sx={{
+              fontFamily: "sans-serif",
+              borderRadius: "16px",
+              marginTop: 10,
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              transition: "transform 0.3s ease-in-out",
+              backgroundColor: "#797972"
+            }}
+          >
+            <CardContent>
+              <ProfileAvatar
+                sx={{
+                  fontSize: 24,
+                }}
+              >
+                {studentData.name.charAt(0)}
+              </ProfileAvatar>
+              <Typography gutterBottom variant="h4" component="div">
+                {studentData.name}
+              </Typography>
+              <Typography variant="body1" color="text.secondary">
+                Email: {studentData.email}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                JNTU No: {studentData.jntu}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Department: {studentData.dept}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Section: {studentData.sec}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Batch: {studentData.batch}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Type: {studentData.type}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Gender: {studentData.gender}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Mobile: {studentData.mobile}
+              </Typography>
+            </CardContent>
+          </Card>
+        </div>
       )}
     </>
   );

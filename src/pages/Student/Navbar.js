@@ -20,7 +20,7 @@ const pages = [
 ];
 const settings = [
   { name: "Profile", path: "/s/profile" },
-  { name: "Logout", path: "/" },
+  { name: "Logout", path: "/logout" },
 ];
 
 const Navbar = () => {

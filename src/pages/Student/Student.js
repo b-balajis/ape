@@ -10,12 +10,13 @@ import headers from "../../components/APIHeader";
 const Student = () => {
   const dispatch = useDispatch();
   const email = localStorage.getItem("email");
+
   useEffect(() => {
     async function fetchStudentData() {
       try {
         const response = await fetch(`/fetchStudent/${email}`, {
-          method: 'GET',
-          headers: headers
+          method: "GET",
+          headers: headers,
         });
         const studentData = await response.json();
         if (!response.ok) {
@@ -38,10 +39,10 @@ const Student = () => {
 
   const fetchPresentSemData = async (batch) => {
     try {
-      const presentSemData = await fetch(`/runningSems`,{
-        method: 'GET',
-        headers: headers
-      })
+      const presentSemData = await fetch(`/runningSems`, {
+        method: "GET",
+        headers: headers,
+      });
       const semdata = await presentSemData.json();
       if (!presentSemData.ok) {
         throw new Error(semdata.message);
@@ -66,7 +67,7 @@ const Student = () => {
     <>
       <Navbar />
       <div className="flex justify-around mt-[10vh]">
-      <ListofSubjects />
+        <ListofSubjects />
       </div>
     </>
   );

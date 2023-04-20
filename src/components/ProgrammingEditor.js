@@ -5,6 +5,11 @@ import Editor from "./Editor";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Languages from "../data/languages.json";
+import screenfull from 'screenfull';
+
+function disableContextMenu(event) {
+  event.preventDefault();
+}
 
 const ProgrammingEditor = () => {
   const { code, setCode, output, error, actualOutputValue, wrongAnswerCheck } =
@@ -33,18 +38,38 @@ const ProgrammingEditor = () => {
     fetchQuestion();
   }, [questionNum]);
 
-  useEffect(() => {
-    function disableRightClick(e) {
-      if (e.button === 2) {
-        e.preventDefault();
-        return false;
-      }
-    }
+  const handleDevTools = (e) => {
+    alert(
+      "DevTools are not allowed. Please close the DevTools and try again."
+    )
+  }
 
-    document.addEventListener("contextmenu", disableRightClick);
+  useEffect(() => {
+
+    // Disable context menu
+    document.addEventListener("contextmenu", disableContextMenu);
+
+    // Detect DevTools
+    document.addEventListener("keydown", function (event) {
+      // Check if the DevTools shortcut was pressed (Cmd + Shift + I or Ctrl + Shift + I)
+      if (
+        (event.metaKey || event.ctrlKey) &&
+        event.shiftKey &&
+        event.keyCode === 73
+      ) {
+        handleDevTools(event);
+      }
+    });
+
+    window.addEventListener("devtoolschange", function (event) {
+      handleDevTools(event);
+    });
 
     return () => {
-      document.removeEventListener("contextmenu", disableRightClick);
+      // Remove event listeners when the component is unmounted
+      document.removeEventListener("contextmenu", disableContextMenu);
+      document.removeEventListener("keydown", handleDevTools);
+      window.removeEventListener("devtoolschange", handleDevTools);
     };
   }, []);
 

@@ -1,36 +1,36 @@
 import React, { useState } from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Paper,
+  Box,
+  Grid,
+  Typography,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
+  InputAdornment,
+  IconButton,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Vector from "../assets/img/se-vector.png";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import FormControl from "@mui/material/FormControl";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
 import { useForm } from "react-hook-form";
-import InputAdornment from "@mui/material/InputAdornment";
-import IconButton from "@mui/material/IconButton";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import Loader from "../components/Loader";
 import { useNavigate } from "react-router-dom";
-// import * as signinAction from "../store/modules/app/slices/app.slice";
-// import { useDispatch } from "react-redux";
 
 const theme = createTheme();
 const SignIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [usertype, setUsersType] = useState("");
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [usertype, setUsersType] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
@@ -54,7 +54,7 @@ const SignIn = () => {
     } else if (usertype === "admin") {
       Navigate(`/a`);
     }
-  }
+  };
 
   // api call
   const authenticateUser = async () => {
@@ -69,6 +69,8 @@ const SignIn = () => {
       });
       const data = await response.json();
       if (!response.ok) {
+        setIsLoading(false);
+        alert(data.message);
         throw new Error(data.message);
       }
       localStorage.setItem("token", data.token);
@@ -79,7 +81,7 @@ const SignIn = () => {
       // setErrorMessage(error.message);
     }
     setIsLoading(false);
-  }
+  };
   const handleSignIn = (e) => {
     e.preventDefault();
     authenticateUser();
@@ -160,10 +162,15 @@ const SignIn = () => {
                 })}
               />
               {errors.email && (
-                <span className="text-red-600 mb-6">{errors.email.message}</span>
+                <span className="text-red-600 mb-6">
+                  {errors.email.message}
+                </span>
               )}
               <TextField
                 label="Password"
+                sx={{
+                  mt: 2,
+                }}
                 fullWidth
                 className="mt-10"
                 variant="outlined"
@@ -188,7 +195,9 @@ const SignIn = () => {
                 })}
               />
               {errors.password && (
-                <span className="text-red-600 mb-6">{errors.password.message}</span>
+                <span className="text-red-600 mb-6">
+                  {errors.password.message}
+                </span>
               )}
               <FormControl
                 sx={{ mt: 2, mb: 2, minWidth: 0 }}
@@ -219,6 +228,14 @@ const SignIn = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, py: 1, fontSize: "18px" }}
+                disabled={
+                  !email ||
+                  !password ||
+                  !usertype ||
+                  errors.email ||
+                  errors.password ||
+                  isLoading
+                }
               >
                 Sign In
               </Button>

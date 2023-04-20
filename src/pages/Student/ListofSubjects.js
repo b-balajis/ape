@@ -6,6 +6,7 @@ import headers from "../../components/APIHeader";
 import { Card, CardContent } from "@mui/material";
 import images from "../../assets/img/languagesImages/languages";
 import { Typography } from "@mui/material/";
+import { useSelector } from "react-redux";
 
 const ListOfSubjects = () => {
   const [subjectDetails, setSubjectDetails] = useState("");
@@ -14,7 +15,8 @@ const ListOfSubjects = () => {
   // const [presentSem, setPresentSem] = useState(null);
   // console.log(data);
 
-  // const { org } = useSelector((state) => state.org.orgInfo);
+  const userData = useSelector((state) => state?.userData?.userDetails);
+  console.log(userData);
   const presentSem = localStorage.getItem("sem");
   const dept = localStorage.getItem("dept");
   const courseCode = "21BEX08";

@@ -26,7 +26,7 @@ const ProfileCard = () => {
       {studentData && (
         <Card
           sx={{
-            maxWidth: 345,
+            width: 1200,
             fontFamily: "sans-serif",
             borderRadius: "16px",
             transition: "transform 0.3s ease-in-out",
@@ -43,7 +43,7 @@ const ProfileCard = () => {
               {studentData.name}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Email: {studentData.email}
+              Emaijjjl: {studentData.email}
             </Typography>
             <Typography variant="body2" color="text.secondary">
               JNTU Number: {studentData.jntu}

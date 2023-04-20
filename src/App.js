@@ -20,6 +20,7 @@ import AddQuestion from "./pages/Faculty/AddQuestion";
 import Management from "./pages/Admin/Management";
 import QuesionView from "./pages/Faculty/QuestionView";
 import OTP from "./pages/Faculty/OTP";
+import LogOut from "./components/Logout";
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route path="/s/profile" element={<Profile />} />
             <Route path="/s/:courseCode" element={<StudentSubject />} />
             <Route path="/s/:courseCode/:question" element={<Home />} />
+            <Route path="/logout" element={<LogOut />} />
           </Routes>
         </main>
       </AppProvider>
