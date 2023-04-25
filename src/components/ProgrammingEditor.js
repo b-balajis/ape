@@ -5,7 +5,7 @@ import Editor from "./Editor";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Languages from "../data/languages.json";
-import screenfull from 'screenfull';
+// import screenfull from 'screenfull';
 
 function disableContextMenu(event) {
   event.preventDefault();
@@ -96,6 +96,9 @@ const ProgrammingEditor = () => {
           <h1 className="font-bold text-white text-3xl">
             {question.qno}. {question.question}
           </h1>
+          <h3 className="font-bold text-white text-xl">
+            Description: {question.description}
+          </h3>
           <section className="flex-grow h-[80vh]">
             <Editor
               language={language.language}

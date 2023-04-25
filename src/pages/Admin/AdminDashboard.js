@@ -4,7 +4,7 @@ import headers from "../../components/APIHeader";
 import { Card, Container, Grid } from "@mui/material";
 import semesterJson from "../../data/sem.json";
 import Loader from "../../components/Loader";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchRunningSems } from "../../store/modules/app/slices/runningSem.slice";
 import { fetchAdminDashboard } from "../../store/modules/app/slices/adminDashboard.slice";
 

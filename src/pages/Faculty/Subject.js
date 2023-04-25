@@ -15,7 +15,7 @@ const Subject = () => {
   const [displayDashboard, setDisplayDashboard] = useState(false);
   const location = useLocation();
   const { courseCode, subject } = location.state;
-  const dept = localStorage.getItem("dept");
+  // const dept = localStorage.getItem("dept");
   const sem = localStorage.getItem("sem");
 
   useEffect(() => {
