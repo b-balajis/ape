@@ -6,10 +6,19 @@ import Navbar from "../pages/Student/Navbar";
 const Home = () => {
   const { language } = useEditor() || {};
   return (
-    <div className="h-full bg-black">
-      <Navbar />
+    <>
+      {/* <div className="sticky top-0">
+        <Navbar />
+      </div> */}
+    <div
+      // style={{
+      //   backgroundColor: "#111827",
+      // }}
+    >
+      {/* making navbar as sticky */}
       {language === "webd" ? <WebD /> : <ProgrammingEditor />}
     </div>
+    </>
   );
 };
 

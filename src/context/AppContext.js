@@ -29,6 +29,9 @@ export const AppProvider = ({ children }) => {
   const [usetType, setUserType] = useState("");
   const [actualOutputValue, setActualOutputValue] = useState("");
   const [wrongAnswerCheck, setWrongAnswerCheck] = useState(false);
+  const [compiled, setCompiled] = useState(false);
+  const [customInputDisplay, setCustomInputDisplay] = useState(false);
+  const [customInputsOutput, setCustomInputsOutput] = useState([]);
 
   return (
     <AppContext.Provider
@@ -77,6 +80,12 @@ export const AppProvider = ({ children }) => {
         setActualOutputValue,
         wrongAnswerCheck,
         setWrongAnswerCheck,
+        compiled,
+        setCompiled,
+        customInputsOutput,
+        setCustomInputsOutput,
+        customInputDisplay,
+        setCustomInputDisplay,
       }}
     >
       {children}

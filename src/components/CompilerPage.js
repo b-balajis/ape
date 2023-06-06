@@ -1,14 +1,13 @@
-import React from "react";
-import Button from "@mui/material/Button";
-import axios from "axios";
-import { useEditor } from "../context/AppContext";
-import qs from "qs";
-import { useState } from "react";
-import Stack from "@mui/material/Stack";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { Button, Dialog, Slide, Stack } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
-import Dialog from "@mui/material/Dialog";
-import Headers from "../components/APIHeader";
+import axios from "axios";
+import qs from "qs";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import Headers from "../components/APIHeader";
+import { useEditor } from "../context/AppContext";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -24,10 +23,15 @@ const CompileButton = (props) => {
     setSubmitted,
     setActualOutputValue,
     setWrongAnswerCheck,
+    setCompiled,
+    setCustomInputsOutput,
+    setCustomInputDisplay,
   } = useEditor() || {};
-  const [compiled, setCompiled] = useState(false);
+  const [compiling, setCompiling] = useState(false);
   const [badRequest, setBadRequest] = useState(false);
   const [wrongAnswer, setWrongAnswer] = useState(false);
+  const [customInput, setCustomInput] = useState(false);
+  const [customInputValue, setCustomInputValue] = useState("");
   const link = useParams();
   const jntu = localStorage.getItem("jntu");
 
@@ -35,7 +39,7 @@ const CompileButton = (props) => {
     if (reason === "clickaway") {
       return;
     }
-    setCompiled(false);
+    setCompiling(false);
     setBadRequest(false);
     setWrongAnswer(false);
   };
@@ -58,6 +62,9 @@ const CompileButton = (props) => {
     setOutput("");
     setError("");
     setIsCompiling(true);
+    setCompiled(false);
+    setCustomInputDisplay(false);
+    setCustomInputValue("");
     const data = qs.stringify({
       code: code,
       language: language.value,
@@ -81,7 +88,9 @@ const CompileButton = (props) => {
         console.log("error", error);
         setError(error);
       } else if (actualOutput === sampleOutput) {
+        setCompiling(true);
         setCompiled(true);
+        setActualOutputValue(actualOutput);
       } else if (actualOutput !== sampleOutput) {
         setWrongAnswer(true);
         setWrongAnswerCheck(true);
@@ -99,6 +108,9 @@ const CompileButton = (props) => {
     setIsSubmitting(true);
     setOutput("");
     setError("");
+    setCompiled(false);
+    setCustomInputDisplay(false);
+    setCustomInputValue("");
     const totalMarksObtained = await handleCodeSubmission();
     setSubmitted(true);
     setIsSubmitting(false);
@@ -178,9 +190,11 @@ const CompileButton = (props) => {
           <Alert
             onClose={handleClose}
             severity="error"
-            sx={{ width: "100%", fontSize: 30 }}
+            sx={{ width: "100%", fontSize: 24 }}
           >
-            {badRequest ? "Bad Request" : "Wrong Answer"}
+            {badRequest
+              ? "Bad Request Please Check Your Code!"
+              : `Sample Test Case Failed Please Try Again`}
           </Alert>
         </Stack>
       </Dialog>
@@ -189,7 +203,7 @@ const CompileButton = (props) => {
 
   const compiledSuccessfully = () => {
     return (
-      <Dialog open={compiled} onClose={handleClose}>
+      <Dialog open={compiling} onClose={handleClose}>
         <Stack spacing={2} sx={{ width: "100%" }}>
           <Alert
             onClose={handleClose}
@@ -204,10 +218,108 @@ const CompileButton = (props) => {
     );
   };
 
+  const handleCustomInput = () => {
+    setCustomInput(!customInput);
+    setCustomInputValue("");
+  };
+
+  const customInputCompile = async (e) => {
+    e.preventDefault();
+    setWrongAnswerCheck(false);
+    setOutput("");
+    setError("");
+    setIsCompiling(true);
+    setCompiled(false);
+    setCustomInputDisplay(false);
+    const data = qs.stringify({
+      code: code,
+      language: language.value,
+      input: customInputValue,
+    });
+    const config = {
+      method: "post",
+      url: "https://api.codex.jaagrav.in",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    try {
+      const response = await axios(config);
+      setResponseData(response.data);
+      const actualOutput = response.data.output;
+      const error = response.data.error;
+      if (error !== "") {
+        console.log("error", error);
+        setError(error);
+      } else {
+        setCustomInputDisplay(true);
+        setCustomInputsOutput(actualOutput);
+      }
+    } catch (err) {
+      console.error(err.code);
+      setBadRequest(true);
+    }
+    setIsCompiling(false);
+  };
+
+  const renderDialogCustomInputForm = () => {
+    return (
+      <div>
+        <Slide
+          in={customInput}
+          direction="up"
+          timeout={300}
+          mountOnEnter
+          unmountOnExit
+        >
+          {/* form using textarea to input data */}
+          <form
+            onSubmit={(e) => customInputCompile(e)}
+            className="flex flex-col gap-4 bg-gray-300 p-3 rounded-2xl"
+          >
+            <div className="flex flex-col gap-4">
+              <textarea
+                className="w-full h-32 p-2 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
+                placeholder="Please provide your input in the exact format specified"
+                value={customInputValue}
+                onChange={(e) => setCustomInputValue(e.target.value)}
+                rows={2}
+                cols={50}
+                // ref={inputRef}
+              ></textarea>
+              <div className="flex gap-4 justify-end">
+                <Button
+                  className="w-[12vh] hover:text-black"
+                  variant="contained"
+                  color="error"
+                  size="large"
+                  onClick={handleCustomInput}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="w-[12vh] hover:text-black"
+                  variant="contained"
+                  color="success"
+                  size="large"
+                  type="submit"
+                >
+                  Run
+                </Button>
+              </div>
+            </div>
+          </form>
+        </Slide>
+      </div>
+    );
+  };
+
   return (
     <>
-      <section className="flex justify-between">
-        <div className="flex gap-4">
+      <section className="">
+        {/* <div className="flex gap-4">
           {noofTestCases.map((sub, i) => (
             <>
               {isSubmitting ? (
@@ -221,29 +333,46 @@ const CompileButton = (props) => {
               )}
             </>
           ))}
-        </div>
-        <div className="flex gap-x-4">
+        </div> */}
+        <div className="flex gap-x-3 justify-end mt-[1vw] mr-[.5vw]">
           <Button
-            className="w-48 hover:text-white"
+            className="w-[20vh] hover:text-black"
+            variant="outlined"
+            color="secondary"
+            size="large"
+            onClick={handleCustomInput}
+            startIcon={
+              !customInput ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />
+            }
+          >
+            Custom Input
+          </Button>
+          <Button
+            className="w-[18vh] hover:text-black"
             variant="outlined"
             color="primary"
             size="large"
             onClick={handleRun}
+            disabled={customInput}
           >
             {isCompiling ? "Compiling..." : "Run"}
           </Button>
           <Button
-            className="w-48"
+            className="w-[18vh]"
             variant="contained"
             color="success"
             size="large"
             onClick={handleSubmission}
+            disabled={customInput}
           >
             {isSubmitting ? "Compiling..." : "Submit"}
           </Button>
         </div>
+        <div className="w-2/4 mb-[2vh]">
+          {customInput && renderDialogCustomInputForm()}
+        </div>
       </section>
-      {compiled && compiledSuccessfully()}
+      {compiling && compiledSuccessfully()}
       {badRequest && badRequestMessage()}
       {wrongAnswer && badRequestMessage()}
     </>

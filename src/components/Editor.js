@@ -49,15 +49,15 @@ const Editor = ({
   };
 
   return (
-    <div className="flex flex-col items-center flex-grow h-full">
+    <div className="flex flex-col items-center flex-grow h-[80vh]">
       {/* Editor title */}
-      {!forPreview && (
+      {/* {!forPreview && (
         <EditorTitle
           language={language}
           editorOpen={editorOpen}
           setEditorOpen={setEditorOpen}
         />
-      )}
+      )} */}
 
       {/* Actual Editor */}
       <AceEditor

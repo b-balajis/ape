@@ -10,15 +10,15 @@ const EditorTitle = ({ language, editorOpen, setEditorOpen }) => {
   };
 
   return (
-    <header className="flex items-center justify-between w-full px-4 py-2 bg-paper-secondary">
+    <header className="flex items-center justify-between w-full px-4 mt-[1vh] bg-blue-100">
       {/* Adjust title according to alignment and language */}
-      <h2
-        className={`text-white uppercase ${
+      {/* <h2
+        className={`text-black uppercase ${
           alignment === "bottom" && "text-left"
         } `}
       >
         {language === "cpp" ? "C++" : language === "c" ? "C" : language}
-      </h2>
+      </h2> */}
 
       {/* Display toggle icon only for webd titles */}
       {(language === "html" ||
