@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { NavLink } from "react-router-dom";
-import Loader from "../../components/Loader";
-import { useEffect, useState } from "react";
-import headers from "../../components/APIHeader";
 import { Card, CardContent } from "@mui/material";
-import images from "../../assets/img/languagesImages/languages";
 import { Typography } from "@mui/material/";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+import images from "../../assets/img/languagesImages/languages";
+import headers from "../../components/APIHeader";
+import Loader from "../../components/Loader";
 
 const ListOfSubjects = () => {
   const [subjectDetails, setSubjectDetails] = useState("");
@@ -19,26 +19,25 @@ const ListOfSubjects = () => {
   console.log(userData);
   const presentSem = localStorage.getItem("sem");
   const dept = localStorage.getItem("dept");
-  const courseCode = "21BEX08";
   const section = "A";
 
   useEffect(() => {
     async function fetchPresentSemData() {
       setIsLoading(true);
       const response = await fetch(
-        `/${presentSem}/${dept}/${courseCode}/${section}/fetchFacultyAndSubjects`,
+        `/${presentSem}/${dept}/${section}/fetchFacultyAndSubjects`,
         {
           headers: headers,
         }
       );
       const data = await response.json();
       if (!response.ok) {
-        alert(data.error);
+        // alert(data.error);
         setError(true);
         setIsLoading(false)
         throw new Error(data.message);
       }
-      setSubjectDetails(data.mergedData);
+      setSubjectDetails(data.completeData[0]);
       setIsLoading(false);
     }
     fetchPresentSemData();

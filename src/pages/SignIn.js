@@ -1,30 +1,30 @@
-import React, { useState } from "react";
-import {
-  Avatar,
-  Button,
-  CssBaseline,
-  TextField,
-  FormControlLabel,
-  Checkbox,
-  Paper,
-  Box,
-  Grid,
-  Typography,
-  InputLabel,
-  MenuItem,
-  Select,
-  FormControl,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
-import Vector from "../assets/img/se-vector.png";
 import AccountCircleSharpIcon from "@mui/icons-material/AccountCircleSharp";
-import { useForm } from "react-hook-form";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Loader from "../components/Loader";
+import {
+  Avatar,
+  Box,
+  Button,
+  Checkbox,
+  CssBaseline,
+  FormControl,
+  FormControlLabel,
+  Grid,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import Vector from "../assets/img/se-vector.png";
+import Loader from "../components/Loader";
 
 const theme = createTheme();
 const SignIn = () => {
@@ -76,9 +76,10 @@ const SignIn = () => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("email", email);
       handleRouteRedirection();
-      // Redirect to another page
     } catch (error) {
       // setErrorMessage(error.message);
+      setIsLoading(false);
+      console.log(error);
     }
     setIsLoading(false);
   };

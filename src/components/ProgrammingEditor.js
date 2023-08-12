@@ -1,17 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Button, IconButton } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEditor } from "../context/AppContext";
+import Languages from "../data/languages.json";
 import CompilerPage from "./CompilerPage";
 import Editor from "./Editor";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Languages from "../data/languages.json";
-import { Button, IconButton } from "@mui/material";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 // import screenfull from 'screenfull';
 
-function disableContextMenu(event) {
-  event.preventDefault();
-}
+// function disableContextMenu(event) {
+//   event.preventDefault();
+// }
 
 const ProgrammingEditor = () => {
   const {

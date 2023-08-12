@@ -1,11 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import headers from "../../components/APIHeader";
+import { profileData } from "../../store/modules/app/slices/profile.slice";
 import ListofSubjects from "./ListofSubjects";
 import Navbar from "./Navbar";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { profileData } from "../../store/modules/app/slices/profile.slice";
-import headers from "../../components/APIHeader";
 
 const Student = () => {
   const dispatch = useDispatch();
@@ -23,11 +22,11 @@ const Student = () => {
           throw new Error(studentData.message);
         }
         dispatch(profileData(studentData));
-        const { batch, jntu, dept, sec } = studentData;
+        const { presentSem, jntu, dept, sec } = studentData;
         localStorage.setItem("jntu", jntu);
         localStorage.setItem("dept", dept);
         localStorage.setItem("sec", sec);
-        fetchPresentSemData(batch);
+        localStorage.setItem("sem", presentSem);
         return studentData;
       } catch (error) {
         console.error(error);
@@ -35,33 +34,7 @@ const Student = () => {
       }
     }
     fetchStudentData();
-  }, []);
-
-  const fetchPresentSemData = async (batch) => {
-    try {
-      const presentSemData = await fetch(`/runningSems`, {
-        method: "GET",
-        headers: headers,
-      });
-      const semdata = await presentSemData.json();
-      if (!presentSemData.ok) {
-        throw new Error(semdata.message);
-      }
-      const currentsem = semdata[0];
-      for (const key in currentsem) {
-        if (Object.hasOwnProperty.call(currentsem, key)) {
-          const element = currentsem[key].batch;
-          if (element === batch) {
-            const sem = currentsem[key].sem;
-            localStorage.setItem("sem", sem);
-          }
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+  }, );
 
   return (
     <>

@@ -15,7 +15,7 @@ import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 import { Avatar } from "@mui/material";
 
 const pages = [
-  { name: "Home", path: "/s" },
+  { name: "Home", path: "/" },
   { name: "Internal", path: "/internal" },
   { name: "MCQs", path: "/mcq" },
 ];
