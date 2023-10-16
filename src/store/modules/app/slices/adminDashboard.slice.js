@@ -1,5 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import headers from "../../../../components/APIHeader";
 
 const initialState = {
@@ -45,5 +44,5 @@ const adminDashboard = createSlice({
   },
 });
 
-export const { adminsDashboard } = adminDashboard.actions;
+export const { apiresponse } = adminDashboard.actions;
 export default adminDashboard;

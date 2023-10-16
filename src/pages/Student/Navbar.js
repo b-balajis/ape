@@ -13,6 +13,7 @@ import { NavLink } from "react-router-dom";
 import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 // import { useEditor } from "../../context/AppContext";
 import { Avatar } from "@mui/material";
+import ProfileIcon from "../../assets/icons/profile.svg";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -140,7 +141,7 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src={ProfileIcon} />
               </IconButton>
             </Tooltip>
             <Menu

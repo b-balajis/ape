@@ -67,7 +67,7 @@ const CompileButton = (props) => {
     setCustomInputValue("");
     const data = qs.stringify({
       code: code,
-      language: language.value,
+      language: language,
       input: sampleInput,
     });
     const config = {
@@ -125,7 +125,7 @@ const CompileButton = (props) => {
       const testcaseOutput = noofTestCases[x].output;
       const data = qs.stringify({
         code: code,
-        language: language.value,
+        language: language,
         input: testcaseInput,
       });
       const config = {
@@ -233,7 +233,7 @@ const CompileButton = (props) => {
     setCustomInputDisplay(false);
     const data = qs.stringify({
       code: code,
-      language: language.value,
+      language: language,
       input: customInputValue,
     });
     const config = {

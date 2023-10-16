@@ -2,9 +2,10 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Button, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEditor } from "../context/AppContext";
-import Languages from "../data/languages.json";
+import { getSubjectQuestions } from "../store/modules/app/slices/subjectQuestions.slice";
 import CompilerPage from "./CompilerPage";
 import Editor from "./Editor";
 // import screenfull from 'screenfull';
@@ -28,27 +29,33 @@ const ProgrammingEditor = () => {
   const [question, setQuestion] = useState("");
   const [language, setLanguage] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const link = useParams();
   const questionNum = link.question;
-  const presentSem = localStorage.getItem("sem");
+  const sem = localStorage.getItem("sem");
   const courseCode = link.courseCode;
 
   //to set the language value to language
   const dept = localStorage.getItem("dept");
 
+  const questionsData = useSelector((state) => state?.subjectQuestions?.subjectQuestions)
+
+
+  useEffect(() => {
+    async function renderQuestions() {
+      await dispatch(getSubjectQuestions({ sem, courseCode }));
+    }
+    renderQuestions();
+  }, [courseCode]);
+
   useEffect(() => {
     async function fetchQuestion() {
-      const response = await fetch(
-        `/${presentSem}/${dept}/${courseCode.toUpperCase()}/${questionNum}/fetchQuestion`
-      );
-      const data = await response.json();
-      setQuestion(data.question);
-      const value = Languages.find((lang) => lang.value === data.language);
-      setLanguage(value);
+      setQuestion(questionsData?.questions[questionNum-1]);
+      setLanguage(questionsData?.language);
     }
     fetchQuestion();
-  }, [questionNum]);
+  }, [questionsData]);
 
   // const handleDevTools = (e) => {
   //   alert("DevTools are not allowed. Please close the DevTools and try again.");
@@ -189,7 +196,7 @@ const ProgrammingEditor = () => {
             <div className="border border-slate-400 mr-[1vh] h-[100vh]"></div>
             <div className="w-2/3 overflow-auto mt-[2vh]">
               <Editor
-                language={language.language.toLocaleLowerCase()}
+                language={language?.toLocaleLowerCase()}
                 code={code}
                 setCode={setCode}
               />

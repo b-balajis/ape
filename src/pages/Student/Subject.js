@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from "react";
+import { Button, CardActionArea, CardActions } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
+import * as React from "react";
 // import Subjects from "../../data/Subjects.json";
-import { NavLink, useLocation, useParams } from "react-router-dom";
-import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import Loader from "../../components/Loader";
+import { getSubjectQuestions } from "../../store/modules/app/slices/subjectQuestions.slice";
+import Navbar from "./Navbar";
 
 const cardStyle = {
   width: 250,
@@ -31,22 +33,33 @@ const Subject = () => {
   const subject = location.state.subject;
   const sem = localStorage.getItem("sem");
   const dept = localStorage.getItem("dept");
-  const section = localStorage.getItem("sec");
+  const sec = localStorage.getItem("section");
   const jntu = localStorage.getItem("jntu");
+
+  const questionsData = useSelector(
+    (state) => state.subjectQuestions?.subjectQuestions
+  );
+  const dispatch = useDispatch();
+  useEffect(() => {
+    async function renderQuestions() {
+      await dispatch(getSubjectQuestions({ sem, courseCode }));
+    }
+    renderQuestions();
+  }, [courseCode]);
   useEffect(() => {
     async function fetchQuestions() {
       setIsLoading(true);
-      const response = await fetch(
-        `/${sem}/${dept}/${courseCode.toUpperCase()}/${section}/${jntu}/fetchQuestionsAndMarks`
+      const marksRes = await fetch(
+        `/${sem}/${courseCode.toUpperCase()}/${sec}/${jntu}/getStudentMarks`
       );
-      const data = await response.json();
-      setQuestions(data.questions);
-      setLanguage(data.language);
-      setStudentMarks(data.marks);
+      const marksData = await marksRes.json();
+      setStudentMarks(marksData[0]);
+      setQuestions(questionsData?.questions);
+      setLanguage(questionsData?.language);
       setIsLoading(false);
     }
     fetchQuestions();
-  }, []);
+  }, [questionsData]);
 
   const handleSolve = (id) => {
     console.log("Solve", id);

@@ -1,7 +1,7 @@
-import React from "react";
-import { Card, CardContent, Typography, Avatar } from "@mui/material";
-import { styled } from "@mui/system";
+import { Avatar, Card, CardContent, Typography } from "@mui/material";
 import { deepPurple } from "@mui/material/colors";
+import { styled } from "@mui/system";
+import React from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import Navbar from "./Navbar";
@@ -16,7 +16,7 @@ const ProfileAvatar = styled(Avatar)(({ theme }) => ({
 }));
 
 const ProfileCard = () => {
-  const studentData = useSelector((state) => state.userData.userDetails);
+  const studentData = useSelector((state) => state?.studentProfile?.studentProfile);
   return (
     <>
       <Navbar />

@@ -22,6 +22,7 @@ import {
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Vector from "../assets/img/se-vector.png";
 import Loader from "../components/Loader";
@@ -44,9 +45,9 @@ const SignIn = () => {
   };
 
   const Navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-  const handleRouteRedirection = () => {
+  const handleRouteRedirection = (token) => {
     if (usertype === "student") {
       Navigate(`/s`);
     } else if (usertype === "faculty") {
@@ -73,9 +74,9 @@ const SignIn = () => {
         alert(data.message);
         throw new Error(data.message);
       }
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("email", email);
-      handleRouteRedirection();
+      await localStorage.setItem("token", data.token);
+      await localStorage.setItem("email", email);
+      handleRouteRedirection(data.token);
     } catch (error) {
       // setErrorMessage(error.message);
       setIsLoading(false);
