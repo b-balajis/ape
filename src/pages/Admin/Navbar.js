@@ -1,23 +1,23 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 import { NavLink } from "react-router-dom";
+import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 
 const pages = [
   {
-    title: "Dashboard",
-    href: "/a/dashboard",
+    title: "Home",
+    href: "/a",
   },
   {
     title: "Add Student",
@@ -78,7 +78,7 @@ const Navbar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/a"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },

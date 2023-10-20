@@ -1,18 +1,19 @@
-import * as React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import Container from "@mui/material/Container";
+import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
+import Toolbar from "@mui/material/Toolbar";
+import Tooltip from "@mui/material/Tooltip";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 import { NavLink } from "react-router-dom";
+import ProfileIcon from "../../assets/icons/profile.svg";
+import GMRIT from "../../assets/img/GMRITNavLogo.jpg";
 
 const pages = [
   {
@@ -67,7 +68,7 @@ const Navbar = () => {
             variant="h6"
             noWrap
             component="a"
-            href="/"
+            href="/f"
             sx={{
               mr: 2,
               display: { xs: "none", md: "flex" },
@@ -110,8 +111,8 @@ const Navbar = () => {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, i) => (
+                <MenuItem key={i} onClick={handleCloseNavMenu}>
                   <NavLink to={`/f/${page.path}`} onClick={clicked}>
                     <Typography textAlign="center">{page.name}</Typography>
                   </NavLink>
@@ -138,10 +139,10 @@ const Navbar = () => {
             <img src={GMRIT} alt="GMRIT" width={120} />
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <NavLink to={`/f${page.path}`}>
+            {pages.map((page, i) => (
+              <NavLink to={`/f${page.path}`} key={i}>
                 <Button
-                  key={page}
+                  // key={page}
                   onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
@@ -154,7 +155,7 @@ const Navbar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="Remy Sharp" src={ProfileIcon} />
               </IconButton>
             </Tooltip>
             <Menu

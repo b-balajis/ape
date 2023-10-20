@@ -1,8 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
-import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 
 const QuestionView = () => {
@@ -34,6 +33,9 @@ const QuestionView = () => {
             </Typography>
             <Typography variant="body1" gutterBottom>
               {question}
+            </Typography>
+            <Typography>
+              {questionData.description}
             </Typography>
             <Typography variant="h6" gutterBottom>
               Sample Input:

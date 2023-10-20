@@ -6,6 +6,7 @@ body {
   font-family: serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: aliceblue;
 }
 */ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",

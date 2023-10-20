@@ -1,20 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from "react";
-import { useState, useEffect } from "react";
-import OutlinedInput from "@mui/material/OutlinedInput";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
 import Select from "@mui/material/Select";
-import Navbar from "./Navbar";
-import Button from "@mui/material/Button";
-import SemesterData from "./SemesterData";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
-import dayjs from "dayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import dayjs from "dayjs";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import Navbar from "./Navbar";
+import SemesterData from "./SemesterData";
 
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -195,7 +195,7 @@ const Mangement = () => {
         </div>
       )}
       <div className="flex place-items-center justify-center v-screen mt-2">
-        <div>
+        <div className="bg-white">
           <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">2nd Year</InputLabel>
             <Select
@@ -247,7 +247,7 @@ const Mangement = () => {
             </div>
           </FormControl>
         </div>
-        <div>
+        <div className="bg-white">
           <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">3rd Year</InputLabel>
             <Select
@@ -299,7 +299,7 @@ const Mangement = () => {
             </div>
           </FormControl>
         </div>
-        <div>
+        <div className="bg-white">
           <FormControl sx={{ m: 1, width: 300, gap: 1 }}>
             <InputLabel id="demo-multiple-name-label">4th Year</InputLabel>
             <Select

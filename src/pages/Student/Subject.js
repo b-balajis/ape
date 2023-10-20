@@ -32,7 +32,6 @@ const Subject = () => {
   const location = useLocation();
   const subject = location.state.subject;
   const sem = localStorage.getItem("sem");
-  const dept = localStorage.getItem("dept");
   const sec = localStorage.getItem("section");
   const jntu = localStorage.getItem("jntu");
 

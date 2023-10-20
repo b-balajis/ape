@@ -10,7 +10,7 @@ const DownloadFile = (props) => {
     arr.push(headers[i].label);
   }
   return (
-    <div className="App">
+    <div>
       <CsvDownloadButton data={data} filename={filename} headers={arr} />
     </div>
   );

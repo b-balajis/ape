@@ -1,43 +1,42 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import * as React from "react";
+import { Button, TableHead } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import StudentDetails from "../../data/studentdetails.json";
-import Divider from "@mui/material/Divider";
-import { TableHead } from "@mui/material";
 import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import * as React from "react";
+import { useEffect, useState } from "react";
+import ApiHeader from "../../components/APIHeader";
 import DownloadFile from "../../components/DownloadFile";
-import Navbar from "./Navbar";
-import { useState, useEffect } from "react";
-import ApiHeader from "../../components/APIHeader"
+import StudentDetails from "../../data/studentdetails.json";
 
-export default function BasicTable() {
+export default function BasicTable(props) {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [studentsMarks, setStudentMarks] = useState("");
-  const semester = "secondSem";
-  const courseCode = "21BEX08";
-  const section = "A";
+  const [loading, setLoading] = useState(true)
 
   // console.log(StudentDetails, studentsMarks);
+  console.log(props);
   useEffect(() => {
+    setLoading(true)
     async function fetchData() {
       const response = await fetch(
-        `/${semester}/${courseCode}/${section}/SubjectMarksDashboard`,
+        `/${props.semester}/${props.courseCode}/${props.section}/SubjectMarksDashboard`,
         {
           headers: ApiHeader,
         }
       );
       const data = await response.json();
       setStudentMarks(data.studentMarks);
+      setLoading(false);
     }
     fetchData();
-  }, []);
-  console.log(studentsMarks, "hellow");
+  }, [props.section]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -65,10 +64,32 @@ export default function BasicTable() {
   ]
   return (
     <>
-    <Navbar />
-    <DownloadFile data={studentsMarks} headers={headers} filename="SubjectMarks.csv" />
+    
+    {loading && (
+        <div className="flex justify-center place-items-center v-screen h-screen">
+          <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+        </div>
+      )}
       {
         studentsMarks && (
+          <>
+          <div className="flex float-right my-[1vh]">
+          <Button
+              variant="contained"
+              size="medium"
+              key="download"
+              sx={{
+                color: "#fff",
+                backgroundColor: "#3f51b5",
+                "&:hover": {
+                  color: "#fff",
+                  backgroundColor: "#3d5afe",
+                },
+              }}
+            >
+              <DownloadFile data={studentsMarks} headers={headers} filename="SubjectMarks.csv" />
+            </Button>
+          </div>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
         <TableContainer component={Paper}>
           <Table
@@ -133,7 +154,7 @@ export default function BasicTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
-        )
+        </>)
       }
     </>
   );
